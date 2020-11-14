@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CSFML",
+        "repositoryURL": "https://github.com/vykrill/CSFML.git",
+        "state": {
+          "branch": null,
+          "revision": "b078d31dd8dfa9ccd00a18002a6bf1a6ea08aceb",
+          "version": "0.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
