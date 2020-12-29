@@ -4,7 +4,10 @@ import XCTest
 
 final class SystemTests: XCTestCase {
     func testTime() {
-        var time = Time(microseconds: 0)
+        print("Two seconds wait...")
+        let time = Time(microseconds: 2000000)
+        sleep(duration: time)
+        print("done")
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
