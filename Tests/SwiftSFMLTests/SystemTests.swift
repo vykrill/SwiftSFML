@@ -10,9 +10,11 @@ final class SystemTests: XCTestCase {
         sleep(duration: time)
         XCTAssertGreaterThan(clock.elapsedTime, time)
         print("Done (clk = \(clock.elapsedTime), time = \(time)")
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
+        
+        // Time Tests
+        XCTAssertEqual(time.seconds, 2)
+        XCTAssertEqual(time.milliseconds, 2000)
+        XCTAssertEqual(time.microseconds, 2000000)
     }
 
     static var allTests = [
