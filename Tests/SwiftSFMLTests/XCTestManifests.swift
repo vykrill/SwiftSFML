@@ -4,6 +4,7 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         testCase(SwiftSFMLTests.allTests),
+        testCase(SystemTests.allTests),
     ]
 }
 #endif
