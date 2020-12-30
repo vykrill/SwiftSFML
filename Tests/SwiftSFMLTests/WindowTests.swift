@@ -4,9 +4,10 @@ import XCTest
 
 final class WindowTests: XCTestCase {
     func testParameters() {
-        let style: WindowStyle = [.titlebar, .close]
+        let style: WindowStyle = [.titlebar, .close, .resize]
 
-        XCTAssertTrue(style.contains(.titlebar))
+        XCTAssertTrue(style == WindowStyle.defaultStyle)
+        
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
