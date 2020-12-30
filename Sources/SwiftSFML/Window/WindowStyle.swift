@@ -6,7 +6,7 @@
 import CSFML
 
 public struct WindowStyle: OptionSet {
-    public var rawValue: UInt32
+    public let rawValue: UInt32
     
     // public static let none = WindowStyle(rawValue: 0)
 
