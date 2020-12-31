@@ -29,4 +29,8 @@ public class RenderWindow {
         self.window = sfRenderWindow_createUnicode(mode, title.utf32, style.rawValue, nil)
     }
 
+    deinit {
+        sfRenderWindow_destroy(self.window)
+    }
+
 }
