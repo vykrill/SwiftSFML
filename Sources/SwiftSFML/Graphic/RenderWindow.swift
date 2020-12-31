@@ -12,6 +12,22 @@ public class RenderWindow {
     private var window: OpaquePointer
 
     // MARK: Properties
+
+    /// Whether the render window has the input focus.
+    ///
+    /// At any given time, only one window may have the input
+    ///  focus to receive input events such as keystrokes or most mouse events.
+    ///
+    /// `true` if the window has focus, `false` otherwise. 
+    public var hasFocus: Bool { 
+        sfRenderWindow_hasFocus(self.window) != 0
+    }
+
+    /// Whether the window is opened or not.
+    public var isOpen: Bool {
+        sfRenderWindow_isOpen(self.window) != 0
+    }
+
     /// The position of the `RenderWindow` in pixels.
     ///
     /// Modifying the position only work on top level windows.
@@ -31,6 +47,7 @@ public class RenderWindow {
         sfRenderWindow_getSettings(self.window)
     }
 
+    // MARK: Initialisation and deinitialisation
     /// Creates a new window with a UTF-32 title.
     public init(mode: VideoMode, title: String, 
                 style: WindowStyle = .defaultStyle, 
@@ -51,6 +68,17 @@ public class RenderWindow {
 
     deinit {
         sfRenderWindow_destroy(self.window)
+    }
+
+    // MARK: Methods
+    /// Close the render window, but does not destroy the internal data.
+    public func close() {
+        sfRenderWindow_close(self.window)
+    }
+
+    /// Update and display the render window on screen.
+    public func display() {
+        sfRenderWindow_display(self.window)
     }
 
 }
