@@ -10,7 +10,6 @@ public struct WindowStyle: OptionSet {
     /// The bit mask for the option set.
     public let rawValue: UInt32
     
-    // public static let none = WindowStyle(rawValue: 0)
 
     /// Title bar + fixed border.
     public static let titlebar   = WindowStyle(rawValue: 1 << 0)
@@ -22,6 +21,9 @@ public struct WindowStyle: OptionSet {
     ///
     /// This flag and all others are mutually exclusive.
     public static let fullscreen = WindowStyle(rawValue: 1 << 3)
+    
+    /// No decorations
+    public static let none: WindowStyle = []
 
     /// The default window style.
     public static let defaultStyle: WindowStyle = [Self.titlebar, Self.resize, Self.close]
