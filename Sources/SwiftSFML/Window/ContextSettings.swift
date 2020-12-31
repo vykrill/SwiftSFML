@@ -5,4 +5,4 @@
 
 import CSFML
 
-public typealias ContextSetting = sfContextSettings
+public typealias ContextSettings = sfContextSettings
