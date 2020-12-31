@@ -7,7 +7,7 @@ final class SystemTests: XCTestCase {
         print("Two seconds wait...")
         let clock = Clock()
         let time = Time(microseconds: 2000000)
-        sleep(duration: time)
+        sleep(time)
         XCTAssertGreaterThan(clock.elapsedTime, time)
         print("Done (clk = \(clock.elapsedTime), time = \(time)")
         
