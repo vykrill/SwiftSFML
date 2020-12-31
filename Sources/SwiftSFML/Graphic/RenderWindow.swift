@@ -11,6 +11,26 @@ public class RenderWindow {
     /// The underlying SFML `sf::RenderWindow` instance.
     private var window: OpaquePointer
 
+    // MARK: Properties
+    /// The position of the `RenderWindow` in pixels.
+    ///
+    /// Modifying the position only work on top level windows.
+    public var position: Vector2I {
+        get { sfRenderWindow_getPosition(self.window) }
+        set { sfRenderWindow_setPosition(self.window, newValue) }
+    }
+
+    /// The size of the rendering region of the window.
+    public var size: Vector2U {
+        get { sfRenderWindow_getSize(self.window) }
+        set { sfRenderWindow_setSize(self.window, newValue) }
+    }
+
+    /// The creation settings of the window.
+    public var settings: ContextSettings { 
+        sfRenderWindow_getSettings(self.window)
+    }
+
     /// Creates a new window with a UTF-32 title.
     public init(mode: VideoMode, title: String, 
                 style: WindowStyle = .defaultStyle, 

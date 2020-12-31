@@ -17,9 +17,18 @@ final class WindowTests: XCTestCase {
     func testRenderWindowCreation() {
         let videoMode = VideoMode(width: 640, height: 480, bitsPerPixel: 32)
         // If we do not provide a name, the window does't appear on screen.
-        let renderWindow = RenderWindow(mode: videoMode, title: "Swift SFML")
+        let renderWindow = RenderWindow(mode: videoMode, title: "Swift SFML", style: .defaultStyle)
+
+        renderWindow.position = Vector2I(x: 100, y: 100)
+        renderWindow.size = Vector2U(x: 800, y: 800)
 
         sleep(Time(seconds: 3.0))
+        // This seems to be flawed, or the operating system has the final word on the window's position.
+        // XCTAssertEqual(renderWindow.position, Vector2I(x: 100, y: 100))
+        XCTAssertEqual(renderWindow.size, Vector2U(x: 800 , y: 800))
+
+        // We can't test this one, since the result are not guaranted.
+        print(renderWindow.settings)
     }
 
     static var allTests = [
