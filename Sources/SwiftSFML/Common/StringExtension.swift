@@ -4,7 +4,7 @@
 // For SwiftSFML
 
 extension String {
-    /// The UTF-32 Representation of the string
+    /// A UTF-32 encoding of `self`.
     public var utf32: [UInt32] {
         var result = [UInt32]()
         for v in self.unicodeScalars {
