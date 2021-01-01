@@ -34,8 +34,21 @@ final class WindowTests: XCTestCase {
         print(renderWindow.settings)
     }
 
+    func testEvent() {
+        let  event = Event.resized(width: 100, height: 100)
+        
+        switch event {
+        case let .resized(width, height):
+            XCTAssertEqual(width, 100)
+            XCTAssertEqual(height, 100)
+        default:
+            XCTAssertTrue(false)
+        }
+    }
+
     static var allTests = [
         ("windowTestParameters", testParameters),
-        ("windowTestCreation", testRenderWindowCreation)
+        ("windowTestCreation", testRenderWindowCreation),
+        ("windowEventTest", testEvent)
     ]
 }
