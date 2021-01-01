@@ -83,7 +83,7 @@ public class RenderWindow {
 
     /// Request the current render window to be made the active foreground window.
     ///
-    ///At any given time, only one window may have the input focus to receive input events such as keystrokes or
+    /// At any given time, only one window may have the input focus to receive input events such as keystrokes or
     /// mouse events. If a window requests focus, it only hints to the operating system, that it would like to be
     /// focused. The operating system is free to deny the request.
     public func requestFocus() {
@@ -97,6 +97,24 @@ public class RenderWindow {
     public func setFramerate(limit: UInt32?) {
         assert(limit ?? 1 > 0, "The framerate limit must be set to at least 1 (use nil to disable).")
         sfRenderWindow_setFramerateLimit(self.window, limit ?? 0)
+    }
+
+    /// Grab or release the mouse cursor.
+    ///
+    /// If set, grabs the mouse cursor inside this window's client area so it may no longer be moved outside its bounds.
+    /// Note that grabbing is only active while the window has focus and calling this function for fullscreen windows
+    /// won't have any effect (fullscreen windows always grab the cursor).
+    ///
+    /// - parameter grabbed: `true` to enable, `false` to disable.
+    public func setMouseCursorGrabbed(_ grabbed: Bool) {
+        sfRenderWindow_setMouseCursorGrabbed(self.window, grabbed == true ? 1 : 0)
+    }
+
+    /// Show or hide the mouse cursor. 
+    ///
+    /// - parameter visible: `true` to show, `false` to hide.
+    public func setMouseCursorVisible(_ visible: Bool) {
+        sfRenderWindow_setMouseCursorVisible(self.window, visible == true ? 1 : 0)
     }
 
     /// Change the title of the window.
