@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## 0.1.1
+## 0.1.1 (2020/12/31)
 The windows are now a little bit more interactive.
 - Access to some `RenderWindow`'s properties:
     - `position`
@@ -23,7 +23,7 @@ The windows are now a little bit more interactive.
     - Vertical sync
     - Visibility and focus
 
-## 0.1.0
+## 0.1.0 (2020/12/31)
 - The basic components required to create a window have been implemented:
     - `ContextSettings`
     - `VideoMode`

@@ -6,7 +6,7 @@ et ce projet est conforme à la [Gestion sémantique de version](https://semver.
 
 ## Non-publié
 
-## 0.1.1
+## 0.1.1 (2020/12/31)
 Les fenêtres sont maintenant un peu plus interactives.
 - Il est possible d'accéder à certaines de leur propriétés:
     - `position`
@@ -23,7 +23,7 @@ Les fenêtres sont maintenant un peu plus interactives.
     - Le titre
     - La visibilité et la mise en premier plan
 
-## 0.1.0
+## 0.1.0 (2020/12/31)
 - Les composants nécéssaires à la création d'une fenêtre ont étés implementés:
     `ContextSettings`
     - `VideoMode`
