@@ -472,6 +472,11 @@ public enum Event {
     // TODO: Move it to the Button struct.
     /// Mouse buttons.
     public struct MouseButton {
+
+        public var button: Button
+        public var x: Int
+        public var y: Int
+        
         public enum Button {
             /// The left mouse button.
             case left
