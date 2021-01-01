@@ -21,14 +21,14 @@ public enum Event {
     /// state or asking the user what to do. If you don't do anything,
     /// the window remains open. 
     ///
-    /// Example
+    /// **Example**
     ///
     ///     if event == .closed {
     ///         window.close()
     ///     }
     ///
     case closed
-    // TODO: Verify code example.
+    
     /// The window was resized.
     /// 
     /// This event is triggered when the window is 
@@ -39,11 +39,13 @@ public enum Event {
     /// the viewport if you use OpenGL directly, or the current view
     /// if you use sfml-graphics. 
     ///
-    /// Example
+    /// **Example**
     ///
-    ///     if let sizeEvent = event as? .resized { 
-    ///         print("New width:  \(sizeEvent.width)")
-    ///         print("New height: \(sizeEvent.height)")
+    ///     switch event { 
+    ///     case let .resized(width, height):
+    ///         print("New width:  \(width)")
+    ///         print("New height: \(height)")
+    ///     default: break
     ///     }
     ///
     /// - parameters:
@@ -61,6 +63,8 @@ public enum Event {
     /// This event can be used e.g. if you want to pause your game
     /// when the window is inactive.
     ///
+    /// **Example**
+    ///
     ///     if event == .lostFocus { 
     ///         myGame.pause()
     ///     }
@@ -75,13 +79,14 @@ public enum Event {
     /// This event can be used e.g. if you want to resume your game
     /// when the window is active again.
     ///
+    /// **Example**
+    ///
     ///     if event == .gainedFocus { 
     ///         myGame.resume()
     ///     }
     ///
     case gainedFocus
     
-    // TODO: Add code example.
     /// A character was typed.
     ///
     /// This event is triggered when a character is typed. This
@@ -101,9 +106,20 @@ public enum Event {
     /// and start to implement crazy algorithms that try to interpret
     /// all the possible key combinations to produce correct
     /// characters. Don't do that! 
+    ///
+    /// **Example**
+    ///
+    ///     switch event { 
+    ///     case let .textEntered(unicode):
+    ///         let scalar = Unicode.Scalar(unicode)
+    ///         print(scalar)
+    ///     default: break 
+    ///     }
+    ///
+    /// - parameter unicode: The unicode scalar of the character that was entrered.
     case textEntered(unicode: UInt32)
     
-    // TODO: Add code example and correct doc.
+    // TODO: correct doc.
     /// A key was pressed.
     ///
     /// This event is triggered when a keyboard key is pressed.
@@ -128,6 +144,22 @@ public enum Event {
     /// (independently of events) as long as the boolean is set.
     /// The other (easier) solution to produce smooth movement is to
     /// use real-time keyboard input with ~~sf::Keyboard~~ 
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .keyPressed(data):
+    ///         if data.code == .escape {
+    ///             print("The escape key was pressed.")
+    ///         }
+    ///         print("Control: \(data.control)")
+    ///         print("    Alt: \(data.alt)")
+    ///         print("  Shift: \(data.shift)")
+    ///         print(" System: \(data.system)")
+    ///     default: break
+    ///     }
+    ///
+    /// - parameter data: Contains the code of the pressed key and the state of the modifier keys.
     case keyPressed( data: Key)
     /// A key was released.
     ///
@@ -150,6 +182,22 @@ public enum Event {
     /// (independently of events) as long as the boolean is set.
     /// The other (easier) solution to produce smooth movement is to
     /// use real-time keyboard input with ~~sf::Keyboard~~ 
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .keyReleased(data):
+    ///         if data.code == .escape {
+    ///             print("The escape key was released.")
+    ///             print("Control: \(data.control)")
+    ///             print("    Alt: \(data.alt)")
+    ///             print("  Shift: \(data.shift)")
+    ///             print(" System: \(data.system)")
+    ///         }
+    ///     default: break
+    ///     }
+    ///
+    /// - parameter data: Contains the code of the released key and the state of the modifier keys.
     case keyReleased(data: Key)
     
     // TODO: Add data to the event, add code example.
@@ -160,25 +208,182 @@ public enum Event {
     case mouseWheelScrolled
     
     /// A mouse button was pressed.
+    ///
+    /// This event is triggered when a mouse button is pressed.
+    ///
+    /// SFML supports 5 mouse buttons: left, right, middle (wheel), extra #1 and extra #2 (side buttons). 
+    ///
+    /// - parameter data: Contains the code of the pressed button, as well as the position of the mouse cursor.
+    ///
+    /// **Example**
+    /// 
+    ///     switch event: 
+    ///     case let .mouseButtonPressed(data):
+    ///         if data.button == .right {
+    ///             print("The right mouse button was pressed")
+    ///             print("Position: (\(data.x); \(data.y))")
+    ///         }
+    ///     default: break
+    ///     }
+    ///
     case mouseButtonPressed( data: MouseButton)
     /// A mouse button was released.
+    ///
+    /// This event is triggered when a mouse button is released.
+    ///
+    /// SFML supports 5 mouse buttons: left, right, middle (wheel), extra #1 and extra #2 (side buttons). 
+    ///
+    /// - parameter data: Contains the code of the released button, as well as the position of the mouse cursor.
+    ///
+    /// **Example**
+    /// 
+    ///     switch event: 
+    ///     case let .mouseButtonReleased(data):
+    ///         if data.button == .right {
+    ///             print("The right mouse button was released")
+    ///             print("Position: (\(data.x); \(data.y))")
+    ///         }
+    ///     default: break
+    ///     }
+    ///
     case mouseButtonReleased(data: MouseButton)
     /// The mouse cursor moved.
+    ///
+    /// This event is triggered when the mouse moves within the window. 
+    ///
+    /// This event is triggered even if the window isn't focused. However, it is triggered only when the mouse 
+    /// moves within the inner area of the window, not when it moves over the title bar or borders.
+    ///
+    /// - parameters:
+    ///     - x: The X position of the cursor relative to the window.
+    ///     - y: The Y position of the cursor relative to the window.
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .mouseMoved(x, y):
+    ///         print("X: \(x), Y: \(y)")
+    ///     default: break
+    ///     }
+    /// 
     case mouseMoved(x: Int, y: Int)
     /// The mouse cursor entered the area of the window.
+    ///
+    /// This event is triggered when the mouse cursor enters the window.
+    ///
+    /// **Example**
+    /// 
+    ///     if event == .mouseEntered {
+    ///         print("The mouse cursor has entered the window.")
+    ///     }
+    ///
     case mouseEntered
     /// The mouse cursor left the area of the window.
+    ///
+    /// This event is triggered when the mouse cursor leaves the window.
+    ///
+    /// **Example**
+    /// 
+    ///     if event == .mouseLeft {
+    ///         print("The mouse cursor has leaved the window.")
+    ///     }
+    ///
     case mouseLeft
     
     /// A joystick button was pressed.
+    ///
+    /// This event is triggered when a joystick button is pressed.
+    ///
+    /// SFML supports up to 8 joysticks and 32 buttons.
+    ///
+    /// - parameter data: Contains the identifier of the joystick and the index of the button that was pressed.
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .joystickButtonPressed(data):
+    ///         print("Joystick button pressed!")
+    ///         print("Joystick id: \(data.joystickID)")
+    ///         print("Button: \(data.buuton)")
+    ///     default: break
+    ///     }
+    ///
     case joystickButtonPressed( data: JoystickButton)
     /// A joystick button was released.
+    ///
+    /// This event is triggered when a joystick button is released.
+    ///
+    /// SFML supports up to 8 joysticks and 32 buttons.
+    ///
+    /// - parameter data: Contains the identifier of the joystick and the index of the button that was released.
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .joystickButtonReleased(data):
+    ///         print("Joystick button released!")
+    ///         print("Joystick id: \(data.joystickID)")
+    ///         print("Button: \(data.buuton)")
+    ///     default: break
+    ///     }
+    ///
     case joystickButtonReleased(data: JoystickButton)
     /// The joystick moved along an axis.
+    ///
+    /// This event is triggered when a joystick axis moves.
+    ///
+    /// Joystick axes are typically very sensitive, that's why SFML uses a detection threshold to avoid spamming your
+    /// event loop with tons of JoystickMoved events. This threshold can be changed with the
+    /// `RenderWindow.setJoystickThreshold` function, in case you want to receive more or less joystick move events.
+    ///
+    /// SFML supports 8 joystick axes: X, Y, Z, R, U, V, POV X and POV Y. How they map to your joystick depends on its 
+    /// driver.
+    ///
+    /// - parameter data: Contains the identifier of the joystick, the name of the axis and its current position (in 
+    ///                     the range [-100, 100].
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .joystickMoved(data):
+    ///         if data.axis == .x {
+    ///             print("X axis moved!")
+    ///             print("Joystick id: \(data.joystickID)")
+    ///             print("New position: \(data.position")
+    ///         }
+    ///     default: break
+    ///     }
+    ///
     case joystickMoved(data: JoystickMove)
-    /// A joystick was connected. 
-    case joystickConnected(   joystickID: UInt32)
+    /// A joystick was connected.
+    ///
+    /// This event is triggered when a joystick is connected.
+    ///
+    /// - parameter joystickID: The identifier of the connected joystick.
+    ///
+    /// **Example**
+    /// 
+    ///     switch event {
+    ///     case let .joystickConnected(id):
+    ///         print("Joystick \(id) has been connected")
+    ///     default: break
+    ///     }
+    ///
+    case joystickConnected(joystickID: UInt32)
     /// A joystick was disconnected.
+    ///
+    /// This event is triggered when a joystick is disconnected.
+    ///
+    /// - parameter joystickID: The identifier of the disconnected joystick.
+    ///
+    /// **Example**
+    /// 
+    ///     switch event {
+    ///     case let .joystickDisconnected(id):
+    ///         print("Joystick \(id) has been disconnected")
+    ///     default: break
+    ///     }
+    ///
     case joystickDisconnected(joystickID: UInt32)
     
     /// A touch event began.
@@ -476,7 +681,7 @@ public enum Event {
         public var button: Button
         public var x: Int
         public var y: Int
-        
+
         public enum Button {
             /// The left mouse button.
             case left
