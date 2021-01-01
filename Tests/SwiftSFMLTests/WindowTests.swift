@@ -35,14 +35,13 @@ final class WindowTests: XCTestCase {
     }
 
     func testEvent() {
-        let  event = Event.resized(width: 100, height: 100)
+        let event = Event.resized(width: 100, height: 100)
         
         switch event {
         case let .resized(width, height):
             XCTAssertEqual(width, 100)
             XCTAssertEqual(height, 100)
-        default:
-            XCTAssertTrue(false)
+        default: XCTAssertTrue(false)
         }
     }
 
