@@ -19,6 +19,9 @@ final class WindowTests: XCTestCase {
         // If we do not provide a name, the window does't appear on screen.
         let renderWindow = RenderWindow(mode: videoMode, title: "Swift SFML", style: .defaultStyle)
 
+        // Just to ensure our conversion from `Bool` to `sfBool` is correct.
+        renderWindow.setMouseCursorVisible(false)
+
         renderWindow.position = Vector2I(x: 100, y: 100)
         renderWindow.size = Vector2U(x: 800, y: 800)
 
