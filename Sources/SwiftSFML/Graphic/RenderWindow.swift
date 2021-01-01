@@ -48,17 +48,22 @@ public class RenderWindow {
     }
 
     // MARK: Initialisation and deinitialisation
-    /// Creates a new window with a UTF-32 title.
+    /// Creates a new window.
+    ///
+    /// - parameters:
+    ///     - mode: The video mode to use.
+    ///     - title: The title of the window.
+    ///     - style: The style of the window (defaults to .defaultStyle).
+    ///     - settings: Creation settings (defaults to the default settings).
     public init(mode: VideoMode, title: String, 
                 style: WindowStyle = .defaultStyle, 
                 settings: ContextSettings = ContextSettings()) {
         
+        // We can do this since the settings are not modified in the CSFML function.
         var settingsCopy = settings
 
-        self.window = sfRenderWindow_createUnicode(mode, 
-                                                   title.utf32, 
-                                                   style.rawValue, 
-                                                   &settingsCopy)
+        // The creation of the window.
+        self.window = sfRenderWindow_createUnicode(mode, title.utf32, style.rawValue, &settingsCopy)
     }
 
     deinit {
@@ -74,6 +79,45 @@ public class RenderWindow {
     /// Update and display the render window on screen.
     public func display() {
         sfRenderWindow_display(self.window)
+    }
+
+    /// Request the current render window to be made the active foreground window.
+    ///
+    ///At any given time, only one window may have the input focus to receive input events such as keystrokes or
+    /// mouse events. If a window requests focus, it only hints to the operating system, that it would like to be
+    /// focused. The operating system is free to deny the request.
+    public func requestFocus() {
+        sfRenderWindow_requestFocus(self.window)
+    }
+
+    /// Limit the framerate to a maximum fixed frequency for a render window. 
+    ///
+    /// - parameter limit: Framerate limit in FPS. Must be at least `1`.
+    ///                     Set to `nil` to disable the limit.
+    public func setFramerate(limit: UInt32?) {
+        assert(limit ?? 1 > 0, "The framerate limit must be set to at least 1 (use nil to disable).")
+        sfRenderWindow_setFramerateLimit(self.window, limit ?? 0)
+    }
+
+    /// Change the title of the window.
+    ///
+    /// - parameter title: The new title.
+    public func setTitle(_ title: String) {
+        sfRenderWindow_setUnicodeTitle(self.window, title.utf32)
+    }
+
+    /// Enable / disable vertical synchronization on a render window. 
+    ///
+    /// - parameter enabled: `true` to enable V-Sync, `false` to disable it.
+    public func setVerticalSync(enabled: Bool) {
+        sfRenderWindow_setVerticalSyncEnabled(self.window, enabled == true ? 1 : 0)
+    }
+
+    /// Show or hide a render window. 
+    ///
+    /// - parameter visibility: `true` to show the window, `false` to hide it.
+    public func setVisible(_ visibility: Bool) {
+        sfRenderWindow_setVisible(self.window, visibility == true ? 1 : 0)
     }
 
 }
