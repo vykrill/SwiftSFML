@@ -491,7 +491,7 @@ public enum Event {
     ///            joystickButtonReleased
     ///            joystickMoved
     ///            joystickDisconnected
-    case joystickConnected(joystickID: UInt32)
+    case joystickConnected(joystickID: UInt)
     /// A joystick was disconnected.
     ///
     /// This event is triggered when a joystick is disconnected.
@@ -510,7 +510,7 @@ public enum Event {
     ///            joystickButtonReleased
     ///            joystickMoved
     ///            joystickConnected
-    case joystickDisconnected(joystickID: UInt32)
+    case joystickDisconnected(joystickID: UInt)
     
     /// A touch event began.
     case touchBegan(data: TouchData)
@@ -524,20 +524,34 @@ public enum Event {
 
     /// Joystick buttons events parameters.
     ///
-    /// Used by `joystickButtonPressed` and `joystickButtonReleased`.
+    /// Used by `joystickButtonPressed` and `joystickButtonReleased` events.
+    ///
+    /// You do not create a `JoystickButtonData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
     public struct JoystickButtonData {
         /// Index of the joystick.
-        public var joystickID: UInt32
+        public var joystickID: UInt
         /// Index of the button that has been pressed.
-        public var button: UInt32
+        public var button: UInt
+
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtJoystickButtonPressed || csfmlEvent.type == sfEvtJoystickButtonReleased,
+                "Tried to create a new JoystickButtonData instance from an invalid sfEvent")
+
+            self.joystickID = UInt(csfmlEvent.joystickButton.joystickId)
+            self.button = UInt(csfmlEvent.joystickButton.button)
+        }
     }
 
     /// Joystick axis move event parameters.
     ///
-    /// Used by `joystickMoved`.
+    /// Used by `joystickMoved` events.
+    ///
+    /// You do not create a `JoystickMoveData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
     public struct JoystickMoveData {
         /// Index of the joystick.
-        public var joystickID: UInt32
+        public var joystickID: UInt
         /// Axis on which the joystick moved.
         public var axis: Axis
         /// The new position on the axis.
@@ -545,9 +559,18 @@ public enum Event {
         /// The range is from -100 to 100.
         public var position: Float
 
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtJoystickMoved, 
+            "Tried to create a JoystickMoveData instance from a invalid event")
+
+            self.joystickID = UInt(csfmlEvent.joystickMove.joystickId)
+            self.axis = Axis(rawValue: csfmlEvent.joystickMove.axis.rawValue)!
+            self.position = csfmlEvent.joystickMove.position
+        }
+
         // TODO: Move it to a Joystick struct.
         /// The axes supported by SFML joystick.
-        public enum Axis {
+        public enum Axis: UInt32 {
             /// The X axis.            
             case x
             /// The Y axis.            
@@ -569,7 +592,9 @@ public enum Event {
 
     /// Keyboard events parameters.
     ///
-    /// Used by `keyPressed` and `keyReleased` events. You do not create a KeyData instance directly. Instead, 
+    /// Used by `keyPressed` and `keyReleased` events. 
+    /// 
+    /// You do not create a KeyData instance directly. Instead, 
     /// you call `RenderWindow.pollEvent` or `RenderWindow.waitEvent` functions.
     public struct KeyData {
         /// The code of the key that has been pressed.
@@ -589,9 +614,9 @@ public enum Event {
         /// Creates a new instance based on an already-existing `sfEvent`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtKeyPressed || csfmlEvent.type == sfEvtKeyReleased,
-                "Fatal: Tried to create a Event.KeyData instance from invalid event")
+                "Fatal: Tried to create a Event.KeyData instance from an invalid event")
 
-            self.code = Code(rawValue: Int(csfmlEvent.key.code.rawValue))!
+            self.code = Code(rawValue: csfmlEvent.key.code.rawValue)!
             self.alt =  csfmlEvent.key.alt != 0
             self.control =  csfmlEvent.key.control != 0
             self.shift = csfmlEvent.key.shift != 0
@@ -599,7 +624,7 @@ public enum Event {
         }
 
         // TODO: Move to a Keyboard struct.
-        public enum Code: Int {
+        public enum Code: Int32 {
             /// Unhandled key.
             case unknown = -1
             /// The *A* key.
@@ -814,14 +839,28 @@ public enum Event {
     }
 
     // TODO: Move it to the Button struct.
-    /// Mouse buttons.
+    /// Mouse buttons data.
+    ///
+    /// Used by `mouseButtonPressed` and `mouseButtonReleased` events.
+    ///
+    /// You do not create a `MouseButtonData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
     public struct MouseButtonData {
 
         public var button: Button
         public var x: Int
         public var y: Int
 
-        public enum Button {
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtMouseButtonPressed || csfmlEvent.type == sfEvtMouseButtonReleased,
+                "Tried to create a MouseButtonData instance from an invalid sfEvent")
+
+            self.button = Button(rawValue: csfmlEvent.mouseButton.button.rawValue)!
+            self.x = Int(csfmlEvent.mouseButton.x)
+            self.y = Int(csfmlEvent.mouseButton.y)
+        }
+
+        public enum Button: UInt32 {
             /// The left mouse button.
             case left
             /// The right mouse button.
@@ -836,6 +875,12 @@ public enum Event {
         }
     }
 
+    /// Data relative to mouse wheel scrolling events.
+    ///
+    /// Used by `mouseWheelScrolled` events.
+    ///
+    /// You do not create a `MouseWheelData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
     public struct MouseWheelScrollData {
 
         /// The orientation of the wheel.
@@ -853,6 +898,18 @@ public enum Event {
         /// Relative to the top of the owner window.
         public var y: Int
 
+        /// Creates a new instance from an pre-existing `sfEvent`.
+        /// - precondition: the `sfEvent` must be of type `sfMouseWheelScrolled`.
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtMouseWheelScrolled, 
+            "Tried to create an Event.MouseWheelScrollData instance from an invalid sfEvent.")
+
+            self.wheel = csfmlEvent.mouseWheelScroll.wheel == sfMouseVerticalWheel ? .vertical : .horizontal
+            self.delta = Float(csfmlEvent.mouseWheelScroll.delta)
+            self.x = Int(csfmlEvent.mouseWheelScroll.x)
+            self.y = Int(csfmlEvent.mouseWheelScroll.y) 
+        }
+
         // TODO: Move to a Mouse struct
         /// Mouse wheels
         public enum Wheel {
@@ -865,14 +922,29 @@ public enum Event {
 
     /// Touch event parameters.
     ///
-    /// Used by `touchBegan`, `touchMoved` and `touchFinished`.
+    /// Used by `touchBegan`, `touchMoved` and `touchFinished` events.
+    ///
+    /// You do not create a `TouchData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
     public struct TouchData {
         /// The index of the finger in case of a multi-touch event.
-        public var finger: UInt32
+        public var finger: UInt
         /// X position of the touch, relative to the left of the owner window.
         public var x: Int
         /// Y position of the touch, relative to the top of the owner window.
         public var y: Int
+
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - precondition: The `sfEvent` must be of type `sfEvtTouchBegan`, `sfEvtTouchMoved` or `sfEvtTouchEnded`.
+        /// - parameter csfmlEvent: The pre-existing event.
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtTouchBegan || csfmlEvent.type == sfEvtTouchMoved ||
+                csfmlEvent.type == sfEvtTouchEnded, "Tried to create a TouchData instance from an invalid sfEvent")
+            
+            self.finger = UInt(csfmlEvent.touch.finger)
+            self.x = Int(csfmlEvent.touch.x)
+            self.y = Int(csfmlEvent.touch.y)
+        }
     }
 
 }
