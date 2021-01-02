@@ -267,7 +267,7 @@ public enum Event {
     ///         }
     ///         print("Wheel movement: \(data.delta)")
     ///         print("Mouse position: (\(data.x), \(data.y)")
-    ///     
+    ///     }
     ///
     /// - SeeAlso: MouseWheelPressed
     ///            mouseButtonReleased
@@ -355,6 +355,7 @@ public enum Event {
     ///            mouseEntered
     ///            mouseLeft
     case mouseMoved(x: Int, y: Int)
+    
     /// The mouse cursor entered the area of the window.
     ///
     /// This event is triggered when the mouse cursor enters the window.
@@ -371,6 +372,7 @@ public enum Event {
     ///            mouseMoved
     ///            mouseLeft
     case mouseEntered
+    
     /// The mouse cursor left the area of the window.
     ///
     /// This event is triggered when the mouse cursor leaves the window.
@@ -406,8 +408,14 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: joystickButtonReleased
+    ///            joystickMoved
+    ///            joystickConnected
+    ///            joystickDisconnected
+    /// - SeeAlso: JostickButton
     case joystickButtonPressed( data: JoystickButton)
-    /// A joystick button was released.
+    
+    // A joystick button was released.
     ///
     /// This event is triggered when a joystick button is released.
     ///
@@ -425,7 +433,13 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: joystickButtonPressed
+    ///            joystickMoved
+    ///            joystickConnected
+    ///            joystickDisconnected
+    /// - SeeAlso: JoystickButton
     case joystickButtonReleased(data: JoystickButton)
+    
     /// The joystick moved along an axis.
     ///
     /// This event is triggered when a joystick axis moves.
@@ -452,7 +466,13 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: joystickButtonPressed
+    ///            joystickButtonReleased
+    ///            joystickConnected
+    ///            joystickDisconnected
+    /// - SeeAlso: JostickMove
     case joystickMoved(data: JoystickMove)
+    
     /// A joystick was connected.
     ///
     /// This event is triggered when a joystick is connected.
@@ -467,6 +487,10 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: joystickButtonPressed
+    ///            joystickButtonReleased
+    ///            joystickMoved
+    ///            joystickDisconnected
     case joystickConnected(joystickID: UInt32)
     /// A joystick was disconnected.
     ///
@@ -482,6 +506,10 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: joystickButtonPressed
+    ///            joystickButtonReleased
+    ///            joystickMoved
+    ///            joystickConnected
     case joystickDisconnected(joystickID: UInt32)
     
     /// A touch event began.
