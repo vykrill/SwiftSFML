@@ -540,6 +540,9 @@ public enum Event {
         /// Index of the button that has been pressed.
         public var button: UInt
 
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtJoystickButtonPressed` or `sfEvtJoystickButtonReleased`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtJoystickButtonPressed || csfmlEvent.type == sfEvtJoystickButtonReleased,
                 "Tried to create a new JoystickButtonData instance from an invalid sfEvent")
@@ -565,6 +568,9 @@ public enum Event {
         /// The range is from -100 to 100.
         public var position: Float
 
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtJoystickMoved`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtJoystickMoved, 
             "Tried to create a JoystickMoveData instance from a invalid event")
@@ -617,7 +623,9 @@ public enum Event {
         /// On linux, it is the *Super* key (to be confirmed).
         public var system: Bool
 
-        /// Creates a new instance based on an already-existing `sfEvent`.
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtKeyPressed` or `sfEvtKeyReleased`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtKeyPressed || csfmlEvent.type == sfEvtKeyReleased,
                 "Fatal: Tried to create a Event.KeyData instance from an invalid event")
@@ -852,11 +860,17 @@ public enum Event {
     /// You do not create a `MouseButtonData` instance directly. Use the `pollEvent` or the `waitEvent` method of
     /// `RenderWindow` to do so.
     public struct MouseButtonData {
-
+        
+        /// Which button has been pressed.
         public var button: Button
+        /// X position of the mouse pointer, relative to the left of the owner window.
         public var x: Int
+        /// Y position of the mouse pointer, relative to the top of the owner window.
         public var y: Int
 
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtMouseButtonPressed` or `sfEvtMouseButtonReleased`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtMouseButtonPressed || csfmlEvent.type == sfEvtMouseButtonReleased,
                 "Tried to create a MouseButtonData instance from an invalid sfEvent")
@@ -904,8 +918,9 @@ public enum Event {
         /// Relative to the top of the owner window.
         public var y: Int
 
-        /// Creates a new instance from an pre-existing `sfEvent`.
-        /// - precondition: the `sfEvent` must be of type `sfMouseWheelScrolled`.
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtMouseWheelScrolled`.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtMouseWheelScrolled, 
             "Tried to create an Event.MouseWheelScrollData instance from an invalid sfEvent.")
@@ -941,8 +956,8 @@ public enum Event {
         public var y: Int
 
         /// Creates a new instance from a pre-existing `sfEvent`.
-        /// - precondition: The `sfEvent` must be of type `sfEvtTouchBegan`, `sfEvtTouchMoved` or `sfEvtTouchEnded`.
-        /// - parameter csfmlEvent: The pre-existing event.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtTouchBegan`, `sfEvtTouchMoved` or `sfEvtTouchEnded`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtTouchBegan || csfmlEvent.type == sfEvtTouchMoved ||
                 csfmlEvent.type == sfEvtTouchEnded, "Tried to create a TouchData instance from an invalid sfEvent")
