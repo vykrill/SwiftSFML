@@ -204,7 +204,7 @@ public enum Event {
     /// - SeeAlso: textEntered
     ///            keyReleased
     /// - SeeAlso: Key
-    case keyPressed( data: Key)
+    case keyPressed(data: KeyData)
     /// A key was released.
     ///
     /// This event is triggered when a keyboard key is released.
@@ -246,7 +246,7 @@ public enum Event {
     /// - SeeAlso: textEntered
     ///            keyPressed
     /// - SeeAlso: Key
-    case keyReleased(data: Key)
+    case keyReleased(data: KeyData)
     
     // TODO: Add data to the event, add code example.
     /// The mouse wheel was scrolled.
@@ -301,7 +301,7 @@ public enum Event {
     ///            mouseMoved
     ///            mouseEntered
     ///            mouseLeft
-    case mouseButtonPressed( data: MouseButton)
+    case mouseButtonPressed(data: MouseButtonData)
 
     /// A mouse button was released.
     ///
@@ -328,7 +328,7 @@ public enum Event {
     ///            mouseEntered
     ///            mouseLeft
     /// - SeeAlso: MouseButton
-    case mouseButtonReleased(data: MouseButton)
+    case mouseButtonReleased(data: MouseButtonData)
 
     /// The mouse cursor moved.
     ///
@@ -413,7 +413,7 @@ public enum Event {
     ///            joystickConnected
     ///            joystickDisconnected
     /// - SeeAlso: JostickButton
-    case joystickButtonPressed( data: JoystickButton)
+    case joystickButtonPressed(data: JoystickButtonData)
     
     // A joystick button was released.
     ///
@@ -438,7 +438,7 @@ public enum Event {
     ///            joystickConnected
     ///            joystickDisconnected
     /// - SeeAlso: JoystickButton
-    case joystickButtonReleased(data: JoystickButton)
+    case joystickButtonReleased(data: JoystickButtonData)
     
     /// The joystick moved along an axis.
     ///
@@ -471,7 +471,7 @@ public enum Event {
     ///            joystickConnected
     ///            joystickDisconnected
     /// - SeeAlso: JostickMove
-    case joystickMoved(data: JoystickMove)
+    case joystickMoved(data: JoystickMoveData)
     
     /// A joystick was connected.
     ///
@@ -513,11 +513,11 @@ public enum Event {
     case joystickDisconnected(joystickID: UInt32)
     
     /// A touch event began.
-    case touchBegan(data: Touch)
+    case touchBegan(data: TouchData)
     /// A touch event ended.
-    case touchMoved(data: Touch)
+    case touchMoved(data: TouchData)
     /// A touch event ended.
-    case touchEnded(data: Touch)
+    case touchEnded(data: TouchData)
     /// A sensor value changed.
     case sensorChanged
     // case count
@@ -525,7 +525,7 @@ public enum Event {
     /// Joystick buttons events parameters.
     ///
     /// Used by `joystickButtonPressed` and `joystickButtonReleased`.
-    public struct JoystickButton {
+    public struct JoystickButtonData {
         /// Index of the joystick.
         public var joystickID: UInt32
         /// Index of the button that has been pressed.
@@ -535,7 +535,7 @@ public enum Event {
     /// Joystick axis move event parameters.
     ///
     /// Used by `joystickMoved`.
-    public struct JoystickMove {
+    public struct JoystickMoveData {
         /// Index of the joystick.
         public var joystickID: UInt32
         /// Axis on which the joystick moved.
@@ -570,7 +570,7 @@ public enum Event {
     /// Keyboard events parameters.
     ///
     /// Used by `keyPressed` and `KeyReleased`.
-    public struct Key {
+    public struct KeyData {
         /// The code of the key that has been pressed.
         public var code: Code
         /// If the *Alt* key is pressed
@@ -802,7 +802,7 @@ public enum Event {
 
     // TODO: Move it to the Button struct.
     /// Mouse buttons.
-    public struct MouseButton {
+    public struct MouseButtonData {
 
         public var button: Button
         public var x: Int
@@ -853,7 +853,7 @@ public enum Event {
     /// Touch event parameters.
     ///
     /// Used by `touchBegan`, `touchMoved` and `touchFinished`.
-    public struct Touch {
+    public struct TouchData {
         /// The index of the finger in case of a multi-touch event.
         public var finger: UInt32
         /// X position of the touch, relative to the left of the owner window.
