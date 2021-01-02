@@ -522,6 +522,12 @@ public enum Event {
     case sensorChanged
     // case count
 
+    /// An event not managed by SwiftSFML.
+    ///
+    /// This occurs if an event polled from CSFML is unknown, such as the deprecated `sfEvtMouseWheelMoved`.
+    /// The best thing to do with this event is to simply ignore it.
+    case unknown
+
     /// Joystick buttons events parameters.
     ///
     /// Used by `joystickButtonPressed` and `joystickButtonReleased` events.
