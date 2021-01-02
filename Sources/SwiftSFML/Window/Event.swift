@@ -586,15 +586,16 @@ public enum Event {
         /// On linux, it is the *Super* key (to be confirmed).
         public var system: Bool
 
-        init(csfmlEvent source: sfEvent) {
-            assert(source.type == sfEvtKeyPressed || source.type == sfEvtKeyReleased,
+        /// Creates a new instance based on an already-existing `sfEvent`.
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtKeyPressed || csfmlEvent.type == sfEvtKeyReleased,
                 "Fatal: Tried to create a Event.KeyData instance from invalid event")
 
-            self.code = Code(rawValue: Int(source.key.code.rawValue))!
-            self.alt =  source.key.alt != 0
-            self.control =  source.key.control != 0
-            self.shift = source.key.shift != 0
-            self.system =  source.key.system != 0
+            self.code = Code(rawValue: Int(csfmlEvent.key.code.rawValue))!
+            self.alt =  csfmlEvent.key.alt != 0
+            self.control =  csfmlEvent.key.control != 0
+            self.shift = csfmlEvent.key.shift != 0
+            self.system =  csfmlEvent.key.system != 0
         }
 
         // TODO: Move to a Keyboard struct.
