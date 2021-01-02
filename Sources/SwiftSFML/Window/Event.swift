@@ -5,7 +5,27 @@
 
 import CSFML
 
+//TODO: Add an example.
 /// defines a system event and its parameters.
+///
+/// `Event` instances are filled by the `pollEvent` (or `waitEvent`) function of the `RenderWindow` class. Only these
+/// two functions can produce valid events.
+///
+/// **Example**
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+/// **See Also**
+/// - SeeAlso: [Original Documentation](https://www.sfml-dev.org/tutorials/2.5/window-events.php)
 public enum Event {
     /// The window requested to be closed.
     ///
@@ -27,6 +47,10 @@ public enum Event {
     ///         window.close()
     ///     }
     ///
+    /// **See Also**
+    /// - SeeAlso: resized
+    ///            lostFocus
+    ///            gained focus
     case closed
     
     /// The window was resized.
@@ -51,6 +75,11 @@ public enum Event {
     /// - parameters:
     ///     - width: The new width in pixels.
     ///     - height: the new height in pixels.
+    ///
+    /// **See Also**
+    /// - SeeAlso: closed
+    ///            lostFocus
+    ///            gained focus
     case resized(width: UInt32, height: UInt32)
     
     /// The window lost the focus.
@@ -69,6 +98,10 @@ public enum Event {
     ///         myGame.pause()
     ///     }
     ///
+    /// **See Also**
+    /// - SeeAlso: closed
+    ///            resized
+    ///            gained focus
     case lostFocus
     /// The window gained focus.
     ///
@@ -85,6 +118,10 @@ public enum Event {
     ///         myGame.resume()
     ///     }
     ///
+    /// **See Also**
+    /// - SeeAlso: closed
+    ///            resized
+    ///            lostFocus
     case gainedFocus
     
     /// A character was typed.
@@ -117,6 +154,9 @@ public enum Event {
     ///     }
     ///
     /// - parameter unicode: The unicode scalar of the character that was entrered.
+    ///
+    /// - SeeAlso: keyPressed
+    ///            keyReleased
     case textEntered(unicode: UInt32)
     
     // TODO: correct doc.
@@ -160,6 +200,10 @@ public enum Event {
     ///     }
     ///
     /// - parameter data: Contains the code of the pressed key and the state of the modifier keys.
+    ///
+    /// - SeeAlso: textEntered
+    ///            keyReleased
+    /// - SeeAlso: Key
     case keyPressed( data: Key)
     /// A key was released.
     ///
@@ -198,6 +242,10 @@ public enum Event {
     ///     }
     ///
     /// - parameter data: Contains the code of the released key and the state of the modifier keys.
+    ///
+    /// - SeeAlso: textEntered
+    ///            keyPressed
+    /// - SeeAlso: Key
     case keyReleased(data: Key)
     
     // TODO: Add data to the event, add code example.
@@ -205,7 +253,29 @@ public enum Event {
     ///
     /// This event is triggered when a mouse wheel moves up or down,
     /// but also laterally if the mouse supports it. 
-    case mouseWheelScrolled
+    /// 
+    /// - parameter data: it contains the number of ticks the wheel has moved, what the orientation 
+    ///                   of the wheel is and the current position of the mouse cursor. 
+    ///
+    /// **Example**
+    ///
+    ///     switch event {
+    ///     case let .mouseWheelScrolled(data)
+    ///         switch data.wheel {
+    ///         case .vertical:     print("Wheel type: vertical.")
+    ///         case .horizontal:   print("Wheel type: horizontal.")
+    ///         }
+    ///         print("Wheel movement: \(data.delta)")
+    ///         print("Mouse position: (\(data.x), \(data.y)")
+    ///     
+    ///
+    /// - SeeAlso: MouseWheelPressed
+    ///            mouseButtonReleased
+    ///            mouseMoved
+    ///            mouseEntered
+    ///            mouseLeft
+    /// - SeeAlso: MouseWheelScrollData
+    case mouseWheelScrolled(data: MouseWheelScrollData)
     
     /// A mouse button was pressed.
     ///
@@ -226,7 +296,13 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: MouseWheelScrolled
+    ///            mouseButtonReleased
+    ///            mouseMoved
+    ///            mouseEntered
+    ///            mouseLeft
     case mouseButtonPressed( data: MouseButton)
+
     /// A mouse button was released.
     ///
     /// This event is triggered when a mouse button is released.
@@ -246,7 +322,14 @@ public enum Event {
     ///     default: break
     ///     }
     ///
+    /// - SeeAlso: MouseWheelScrolled
+    ///            mouseButtonPressed
+    ///            mouseMoved
+    ///            mouseEntered
+    ///            mouseLeft
+    /// - SeeAlso: MouseButton
     case mouseButtonReleased(data: MouseButton)
+
     /// The mouse cursor moved.
     ///
     /// This event is triggered when the mouse moves within the window. 
@@ -266,6 +349,11 @@ public enum Event {
     ///     default: break
     ///     }
     /// 
+    /// - SeeAlso: MouseWheelScrolled
+    ///            mouseButtonPressed
+    ///            mouseButtonReleased
+    ///            mouseEntered
+    ///            mouseLeft
     case mouseMoved(x: Int, y: Int)
     /// The mouse cursor entered the area of the window.
     ///
@@ -277,6 +365,11 @@ public enum Event {
     ///         print("The mouse cursor has entered the window.")
     ///     }
     ///
+    /// - SeeAlso: mouseWheelScrolled
+    ///            mouseButtonPressed
+    ///            mouseButtonReleased
+    ///            mouseMoved
+    ///            mouseLeft
     case mouseEntered
     /// The mouse cursor left the area of the window.
     ///
@@ -288,6 +381,11 @@ public enum Event {
     ///         print("The mouse cursor has leaved the window.")
     ///     }
     ///
+    /// - SeeAlso: MouseWheelScrolled
+    ///            mouseButtonPressed
+    ///            mouseButtonReleased
+    ///            mouseMoved
+    ///            mouseEntered
     case mouseLeft
     
     /// A joystick button was pressed.
@@ -694,6 +792,33 @@ public enum Event {
             /// The second extra mouse button.
             case xButton2
             // case count
+        }
+    }
+
+    public struct MouseWheelScrollData {
+
+        /// The orientation of the wheel.
+        public var wheel: Wheel
+        /// Wheel ofset.
+        ///
+        /// Positive is up/left, negative is down/right. High-precision mice may use non-integral offsets.
+        public var delta: Float
+        /// X position of the mouse cursor.
+        ///
+        /// Relative to the top of the owner window.
+        public var x: Int
+        /// Y position of the mouse cursor.
+        ///
+        /// Relative to the top of the owner window.
+        public var y: Int
+
+        // TODO: Move to a Mouse struct
+        /// Mouse wheels
+        public enum Wheel {
+            /// The vertical mouse wheel.
+            case vertical
+            /// The horizontal mouse wheel.
+            case horizontal
         }
     }
 
