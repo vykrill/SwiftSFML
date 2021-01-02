@@ -569,7 +569,8 @@ public enum Event {
 
     /// Keyboard events parameters.
     ///
-    /// Used by `keyPressed` and `KeyReleased`.
+    /// Used by `keyPressed` and `keyReleased` events. You do not create a KeyData instance directly. Instead, 
+    /// you call `RenderWindow.pollEvent` or `RenderWindow.waitEvent` functions.
     public struct KeyData {
         /// The code of the key that has been pressed.
         public var code: Code
@@ -584,6 +585,17 @@ public enum Event {
         /// On macOS, it is the *Command* key. On Windows, it is the *Windows* key.
         /// On linux, it is the *Super* key (to be confirmed).
         public var system: Bool
+
+        init(csfmlEvent source: sfEvent) {
+            assert(source.type == sfEvtKeyPressed || source.type == sfEvtKeyReleased,
+                "Fatal: Tried to create a Event.KeyData instance from invalid event")
+
+            self.code = Code(rawValue: Int(source.key.code.rawValue))!
+            self.alt =  source.key.alt != 0
+            self.control =  source.key.control != 0
+            self.shift = source.key.shift != 0
+            self.system =  source.key.system != 0
+        }
 
         // TODO: Move to a Keyboard struct.
         public enum Code: Int {
