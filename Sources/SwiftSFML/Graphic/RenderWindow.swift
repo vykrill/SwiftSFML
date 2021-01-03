@@ -174,8 +174,8 @@ public class RenderWindow {
     /// - SeeAlso: poll(event:)
     public func wait(event: inout Event) -> Bool {
         var csfmlEvent = sfEvent()
-        let returnValue = sfRenderWindow_waitEvent(self.window, &csfmlEvent)
-        event = translate(event)
+        let returnValue = sfRenderWindow_waitEvent(self.window, &csfmlEvent) != 0
+        event = translate(csfmlEvent)
         return returnValue
     }
 
