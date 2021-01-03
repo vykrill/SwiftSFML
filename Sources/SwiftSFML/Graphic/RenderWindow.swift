@@ -129,21 +129,21 @@ public class RenderWindow {
     /// won't have any effect (fullscreen windows always grab the cursor).
     ///
     /// - parameter grabbed: `true` to enable, `false` to disable.
-    public func setMouseCursorGrabbed(_ grabbed: Bool) {
+    public func setMouseCursorGrabbed(to grabbed: Bool) {
         sfRenderWindow_setMouseCursorGrabbed(self.window, grabbed == true ? 1 : 0)
     }
 
     /// Show or hide the mouse cursor. 
     ///
     /// - parameter visible: `true` to show, `false` to hide.
-    public func setMouseCursorVisible(_ visible: Bool) {
+    public func setMouseCursorVisible(to visible: Bool) {
         sfRenderWindow_setMouseCursorVisible(self.window, visible == true ? 1 : 0)
     }
 
     /// Change the title of the window.
     ///
     /// - parameter title: The new title.
-    public func setTitle(_ title: String) {
+    public func setTitle(to title: String) {
         sfRenderWindow_setUnicodeTitle(self.window, title.utf32)
     }
 
@@ -157,7 +157,7 @@ public class RenderWindow {
     /// Show or hide a render window. 
     ///
     /// - parameter visibility: `true` to show the window, `false` to hide it.
-    public func setVisible(_ visibility: Bool) {
+    public func setVisible(to visibility: Bool) {
         sfRenderWindow_setVisible(self.window, visibility == true ? 1 : 0)
     }
 

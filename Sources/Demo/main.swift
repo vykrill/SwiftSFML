@@ -17,7 +17,7 @@ while window.isOpen {
         case .closed:
             window.close()
         case let .resized(width, height):
-            window.setTitle("SwiftSFML Demo - w: \(width), h: \(height) ")
+            window.setTitle(to: "SwiftSFML Demo - w: \(width), h: \(height) ")
         default:
             break
         }

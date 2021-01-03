@@ -20,7 +20,7 @@ final class WindowTests: XCTestCase {
         let renderWindow = RenderWindow(mode: videoMode, title: "Swift SFML", style: .defaultStyle)
 
         // Just to ensure our conversion from `Bool` to `sfBool` is correct.
-        renderWindow.setMouseCursorVisible(false)
+        renderWindow.setMouseCursorVisible(to: false)
 
         renderWindow.position = Vector2I(x: 100, y: 100)
         renderWindow.size = Vector2U(x: 800, y: 800)
