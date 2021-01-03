@@ -968,4 +968,50 @@ public enum Event {
         }
     }
 
+    /// Sensor event parameters.
+    ///
+    /// Used by `sensorChanged` events.
+    ///
+    /// You do not create a `SensorData` instance directly. Use the `pollEvent` or the `waitEvent` method of
+    /// `RenderWindow` to do so.
+    public struct SensorData {
+
+        /// Type of sensor.
+        public var type: SensorType
+
+        /// Current value of the sensor on the X axis.
+        public var x: Float
+        /// Current value of the sensor on the X axis.
+        public var y: Float
+        /// Current value of the sensor on the X axis.
+        public var z: Float
+
+        init(from csfmlEvent: sfEvent) {
+            assert(csfmlEvent.type == sfEvtSensorChanged, 
+            "Tried to create a SensorData instance from an invalid sfEvent")
+
+            self.type = SensorType(rawValue: csfmlEvent.sensor.type.rawValue)!
+
+            self.x = csfmlEvent.sensor.x
+            self.y = csfmlEvent.sensor.y
+            self.z = csfmlEvent.sensor.z
+        }
+
+        /// Sensor type.
+        public enum SensorType: UInt32 {
+            /// Measures the raw acceleration (m/s^2). 
+            case accelerometer    
+            /// Measures the raw rotation rates (degrees/s). 
+            case gyroscope
+            /// Measures the ambient magnetic field (micro-teslas).
+            case magnetometer     
+            /// Measures the direction and intensity of gravity, independent of device acceleration (m/s^2).
+            case gravity
+            /// Measures the direction and intensity of device acceleration, independent of the gravity (m/s^2).
+            case userAcceleration 
+            /// Measures the absolute 3D orientation (degrees).
+            case orientation      
+        }        
+    }
+
 }
