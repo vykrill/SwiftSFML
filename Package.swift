@@ -10,6 +10,7 @@ let package = Package(
         .library(
             name: "SwiftSFML",
             targets: ["SwiftSFML"]),
+        .executable(name: "SwiftSFML Demo", targets: ["Demo"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -26,5 +27,6 @@ let package = Package(
         .testTarget(
             name: "SwiftSFMLTests",
             dependencies: ["SwiftSFML"]),
+        .target(name: "Demo", dependencies: [.target(name: "SwiftSFML")])
     ]
 )
