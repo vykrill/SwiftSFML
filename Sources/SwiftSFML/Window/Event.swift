@@ -519,7 +519,7 @@ public enum Event {
     /// A touch event ended.
     case touchEnded(data: TouchData)
     /// A sensor value changed.
-    case sensorChanged(data: TouchData)
+    case sensorChanged(data: SensorData)
     // case count
 
     /// An event not managed by SwiftSFML.
@@ -986,6 +986,9 @@ public enum Event {
         /// Current value of the sensor on the X axis.
         public var z: Float
 
+        /// Creates a new instance from a pre-existing `sfEvent`.
+        /// - precondition: `csfmlEvent` must be of type `sfEvtSensorChanged`.
+        /// - parameter csfmlEvent: A pre-existing event from CSFML.
         init(from csfmlEvent: sfEvent) {
             assert(csfmlEvent.type == sfEvtSensorChanged, 
             "Tried to create a SensorData instance from an invalid sfEvent")
