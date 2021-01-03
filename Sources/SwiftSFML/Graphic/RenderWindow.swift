@@ -154,10 +154,28 @@ public class RenderWindow {
     ///
     /// - parameter event: The event that will be popped out of the queue.
     /// - returns: `false` if no new event occured since last call, otherwise `true`.
+    /// - SeeAlso: wait(event:)
     public func poll(event: inout Event) -> Bool {
         var cEvent = sfEvent()
         let returnValue = sfRenderWindow_pollEvent(self.window, &cEvent) != 0
         event = translate(cEvent)
+        return returnValue
+    }
+
+    /// Wait for an event and return it.
+    ///
+    /// This function is blocking: if there's no pending event then it will wait until an event is received. After this
+    /// function returns (and no error occurred), the `event` instance is always valid and filled properly. This function is
+    /// typically used when you have a thread that is dedicated to events handling: you want to make this thread sleep
+    /// as long as no new event is received. 
+    ///
+    /// - parameter event: The event to be returned.
+    /// - returns: `false` if an error occured.
+    /// - SeeAlso: poll(event:)
+    public func wait(event: inout Event) -> Bool {
+        var csfmlEvent = sfEvent()
+        let returnValue = sfRenderWindow_waitEvent(self.window, &csfmlEvent)
+        event = translate(event)
         return returnValue
     }
 
