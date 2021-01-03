@@ -248,7 +248,6 @@ public enum Event {
     /// - SeeAlso: Key
     case keyReleased(data: KeyData)
     
-    // TODO: Add data to the event, add code example.
     /// The mouse wheel was scrolled.
     ///
     /// This event is triggered when a mouse wheel moves up or down,
@@ -1000,6 +999,7 @@ public enum Event {
             self.z = csfmlEvent.sensor.z
         }
 
+        // TODO: Move it to a distinct class.
         /// Sensor type.
         public enum SensorType: UInt32 {
             /// Measures the raw acceleration (m/s^2). 
@@ -1016,5 +1016,4 @@ public enum Event {
             case orientation      
         }        
     }
-
 }
