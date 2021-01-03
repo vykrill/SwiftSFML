@@ -6,6 +6,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(SwiftSFMLTests.allTests),
         testCase(SystemTests.allTests),
         testCase(WindowTests.allTests),
+        testCase(GraphicsTests.allTests),
     ]
 }
 #endif
