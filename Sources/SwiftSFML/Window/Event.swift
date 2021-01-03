@@ -977,7 +977,7 @@ public enum Event {
     public struct SensorData {
 
         /// Type of sensor.
-        public var type: SensorType
+        public var sensorType: SensorType
 
         /// Current value of the sensor on the X axis.
         public var x: Float
@@ -990,7 +990,7 @@ public enum Event {
             assert(csfmlEvent.type == sfEvtSensorChanged, 
             "Tried to create a SensorData instance from an invalid sfEvent")
 
-            self.type = SensorType(rawValue: csfmlEvent.sensor.type.rawValue)!
+            self.sensorType = SensorType(rawValue: csfmlEvent.sensor.type.rawValue)!
 
             self.x = csfmlEvent.sensor.x
             self.y = csfmlEvent.sensor.y
