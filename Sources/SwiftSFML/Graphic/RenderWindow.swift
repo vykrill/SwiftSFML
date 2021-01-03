@@ -138,6 +138,29 @@ public class RenderWindow {
         sfRenderWindow_setVisible(self.window, visibility == true ? 1 : 0)
     }
 
+    // MARK - Event handling
+    /// Pop the event on top of the event queue, if any, and return it. 
+    ///
+    /// This function is not blocking: if there's no pending event then it will return `false` and leave `event`
+    /// unmodified. Note that more than one event may be present in the event queue, thus you should always
+    /// call this function in a loop to make sure that you process every pending event. 
+    ///
+    /// **Example**
+    ///
+    ///     var event = Event.unknown
+    ///     while window.poll(event) {
+    ///         // Process event...
+    ///     }
+    ///
+    /// - parameter event: The event that will be popped out of the queue.
+    /// - returns: `false` if no new event occured since last call, otherwise `true`.
+    public func poll(event: inout Event) -> Bool {
+        var cEvent = sfEvent()
+        let returnValue = sfRenderWindow_pollEvent(self.window, &cEvent) != 0
+        event = translate(cEvent)
+        return returnValue
+    }
+
     /// Translates event data from CSFML into SwiftSFML `Event`.
     /// - parameter csfmlEvent: A `sfEvent` coming straight from CSFML.
     /// - returns: The corresponding `Event`, or `.unknown` if the event is not recognized by SwiftSFML.
