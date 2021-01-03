@@ -99,6 +99,29 @@ public class RenderWindow {
         sfRenderWindow_setFramerateLimit(self.window, limit ?? 0)
     }
 
+    /// Change the joystick threshold.
+    ///
+    /// The joystick threshold is the value below which no JoystickMoved event will be generated.
+    /// 
+    /// The threshold value is 0.1 by default.
+    ///
+    /// - parameter threshold: The new threshold, in the range [0, 100]
+    public func setJoystickThreshold(to threshold: Float) {
+        sfRenderWindow_setJoystickThreshold(self.window, threshold)
+    }
+
+    /// Enable or disable automatic key-repeat.
+    /// 
+    /// If key repeat is enabled, you will receive repeated KeyPressed events while keeping a key pressed. If it is
+    /// disabled, you will only get a single event when the key is pressed.
+    /// 
+    /// Key repeat is enabled by default.
+    ///
+    /// - parameter enabled: `true` to enable, `false` to disable.
+    public func setKeyRepeat(to enabled: Bool) {
+        sfRenderWindow_setKeyRepeatEnabled(self.window, enabled == true ? 1 : 0)
+    }
+
     /// Grab or release the mouse cursor.
     ///
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be moved outside its bounds.
