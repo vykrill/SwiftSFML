@@ -138,4 +138,57 @@ public class RenderWindow {
         sfRenderWindow_setVisible(self.window, visibility == true ? 1 : 0)
     }
 
+    /// Translates event data from CSFML into SwiftSFML `Event`.
+    /// - parameter csfmlEvent: A `sfEvent` coming straight from CSFML.
+    /// - returns: The corresponding `Event`, or `.unknown` if the event is not recognized by SwiftSFML.
+    private func translate(_ csfmlEvent: sfEvent) -> Event {
+        switch csfmlEvent.type {
+        case sfEvtClosed:
+            return .closed
+        case sfEvtResized:
+            return .resized(width: csfmlEvent.size.width, height: csfmlEvent.size.height)
+        case sfEvtLostFocus:
+            return .lostFocus
+        case sfEvtGainedFocus:
+            return .gainedFocus
+        case sfEvtTextEntered:
+            return .textEntered(unicode: csfmlEvent.text.unicode)
+        case sfEvtKeyPressed:
+            return .keyPressed(data: Event.KeyData(from: csfmlEvent))
+        case sfEvtKeyReleased:
+            return .keyReleased(data: Event.KeyData(from: csfmlEvent))
+        case sfEvtMouseWheelScrolled:
+            return .mouseWheelScrolled(data: Event.MouseWheelScrollData(from: csfmlEvent))
+        case sfEvtMouseButtonPressed:
+            return .mouseButtonPressed(data: Event.MouseButtonData(from: csfmlEvent))
+        case sfEvtMouseButtonReleased:
+            return .mouseButtonReleased(data: Event.MouseButtonData(from: csfmlEvent))
+        case sfEvtMouseMoved:
+            return .mouseMoved(x: Int(csfmlEvent.mouseMove.x), y: Int(csfmlEvent.mouseMove.y))
+        case sfEvtMouseEntered:
+            return .mouseEntered
+        case sfEvtMouseLeft:
+            return .mouseLeft
+        case sfEvtJoystickButtonPressed:
+            return .joystickButtonPressed(data: Event.JoystickButtonData(from: csfmlEvent))
+        case sfEvtJoystickButtonReleased:
+            return .joystickButtonReleased(data: Event.JoystickButtonData(from: csfmlEvent))
+        case sfEvtJoystickMoved:
+            return .joystickMoved(data: Event.JoystickMoveData(from: csfmlEvent))
+        case sfEvtJoystickConnected:
+            return .joystickConnected(joystickID: UInt(csfmlEvent.joystickConnect.joystickId))
+        case sfEvtJoystickDisconnected:
+            return .joystickDisconnected(joystickID: UInt(csfmlEvent.joystickConnect.joystickId))
+        case sfEvtTouchBegan:
+            return .touchBegan(data: Event.TouchData(from: csfmlEvent))
+        case sfEvtTouchMoved:
+            return .touchMoved(data: Event.TouchData(from: csfmlEvent))
+        case sfEvtTouchEnded:
+            return .touchEnded(data: Event.TouchData(from: csfmlEvent))
+        case sfEvtSensorChanged:
+            return .sensorChanged(data: Event.SensorData(from: csfmlEvent))
+        default: 
+            return .unknown
+        }
+    }
 }
