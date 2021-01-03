@@ -519,7 +519,7 @@ public enum Event {
     /// A touch event ended.
     case touchEnded(data: TouchData)
     /// A sensor value changed.
-    case sensorChanged
+    case sensorChanged(data: TouchData)
     // case count
 
     /// An event not managed by SwiftSFML.
