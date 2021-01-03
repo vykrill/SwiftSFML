@@ -22,6 +22,6 @@ while window.isOpen {
             break
         }
     }
-
-    
+    window.clear(fillColor: .red)
+    window.display()
 }
