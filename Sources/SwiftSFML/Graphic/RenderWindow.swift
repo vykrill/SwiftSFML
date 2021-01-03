@@ -255,4 +255,14 @@ public class RenderWindow {
             return .unknown
         }
     }
+
+    // MARK: Graphics
+    /// Clear the entire target with a single color. 
+    ///
+    /// This function is usually called once every frame, to clear the previous contents of the window.
+    ///
+    /// - parameter fillColor: The color used to clear the window.
+    public func clear(fillColor: Color = Color.black) {
+        sfRenderWindow_clear(self.window, fillColor)
+    }
 }
