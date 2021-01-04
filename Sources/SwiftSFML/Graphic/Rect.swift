@@ -1,4 +1,4 @@
-// Color.swift
+// Rect.swift
 // Created by Jérémy Goyette
 // On 2021/01/03
 // For SwiftSFML
