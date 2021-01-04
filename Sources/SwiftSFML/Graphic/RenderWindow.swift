@@ -143,8 +143,10 @@ public class RenderWindow {
     /// Change the title of the window.
     ///
     /// - parameter title: The new title.
+    /// - bug: Sometime adds extra characters to the title.
     public func setTitle(to title: String) {
         sfRenderWindow_setUnicodeTitle(self.window, title.utf32)
+        // sfRenderWindow_setUnicodeTitle(self.window,[0x61, 0x61, 0x61, 0x61, 0x61])
     }
 
     /// Enable / disable vertical synchronization on a render window. 
