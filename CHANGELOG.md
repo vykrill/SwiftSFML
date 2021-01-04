@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### The Rendering Update
 #### Additions
-- ported the `Color` struct.
+- Ported the `Color` struct.
+- Added a more reliable version of `setTitle()` in `RenderWindow`.
 
 ## 0.2.0 Event Update (2021/01/03)
 ### Breaking changes
