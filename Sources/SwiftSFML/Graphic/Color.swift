@@ -4,6 +4,7 @@
 // For SwiftSFML
 
 import CSFML
+import Foundation
 
 /// Utility structure for manipulating RGBA colors.
 ///
@@ -48,6 +49,50 @@ extension Color {
     /// Creates a new color from an integer value.
     public init(from integer: UInt32) {
         self = sfColor_fromInteger(integer)
+    }
+
+    /// Creates a new color from HSV value.
+    ///
+    /// The formulas are taken from https://www.rapidtables.com/convert/color/hsv-to-rgb.html.
+    ///
+    /// - parameters:
+    ///     - h: Hue [0, 360[
+    ///     - s: Saturation [0, 1]
+    ///     - v: Value [0, 1]
+    ///     - a: Alpha [0, 255]
+    public init(h: Double, s: Double, v: Double, a: UInt8 = 255) {
+
+        assert(h >= 0 && h < 360, "Hue value must be in the range [0, 360[.")
+        assert(s >= 0 && s <= 1, "Saturation must be in the range [0, 1].")
+        assert(v >= 0 && v <= 1, "Value must be in the range [0, 1].")
+
+        self.init()
+
+        let c = v * s
+        let x = c * (1 - abs((h / 60).truncatingRemainder(dividingBy: 2) - 1))
+        let m = v - c
+        var tuple: (Double, Double, Double)
+        switch h {
+        case h where 0 <= h && h < 60:
+            tuple.0 = c; tuple.1 = x; tuple.2 = 0
+        case h where 60 <= h && h < 120:
+            tuple.0 = x; tuple.1 = c; tuple.2 = 0
+        case h where 120 <= h && h < 180:
+            tuple.0 = 0; tuple.1 = c; tuple.2 = x
+        case h where 180 <= h && h < 240:
+            tuple.0 = 0; tuple.1 = x; tuple.2 = c
+        case h where 240 <= h && h < 300:
+            tuple.0 = x; tuple.1 = 0; tuple.2 = c
+        case h where 300 <= h && h < 360:
+            tuple.0 = c; tuple.1 = 0; tuple.2 = x
+        default:
+            fatalError()
+        }
+
+        self.r = UInt8((tuple.0 + m) * 255)
+        self.g = UInt8((tuple.1 + m) * 255)
+        self.b = UInt8((tuple.2 + m) * 255)
+        self.a = a
     }
 
     /// The integer version of the color.
