@@ -44,7 +44,21 @@ final class GraphicsTests: XCTestCase {
 
     }
 
+    func testTransform() {
+        var transform: Transform = [
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, 1.0
+        ]
+
+        XCTAssertEqual(transform, Transform.identity)
+        transform.rotate(by: 90)
+
+        print(transform.matrix)
+    }
+
     static var allTests = [
         ("graphicsTestColor", testColor),
+        ("graphicsTestTransform", testTransform)
     ]
 }
