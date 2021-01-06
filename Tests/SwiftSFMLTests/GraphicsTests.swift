@@ -57,8 +57,15 @@ final class GraphicsTests: XCTestCase {
         print(transform.matrix)
     }
 
+    func testTextures() {
+        let url = URL(fileURLWithPath: "/foo.png")
+        var tex = Texture(fromURL: url, withArea: nil)
+        print(tex)
+    }
+
     static var allTests = [
         ("graphicsTestColor", testColor),
-        ("graphicsTestTransform", testTransform)
+        ("graphicsTestTransform", testTransform),
+        ("graphicsTestTextures", testTextures)
     ]
 }
