@@ -27,6 +27,8 @@ let package = Package(
         .testTarget(
             name: "SwiftSFMLTests",
             dependencies: ["SwiftSFML"]),
-        .target(name: "Demo", dependencies: [.target(name: "SwiftSFML")])
+        .target(name: "Demo", dependencies: [.target(name: "SwiftSFML")], resources: [
+            .process("Resources")
+        ])
     ]
 )
