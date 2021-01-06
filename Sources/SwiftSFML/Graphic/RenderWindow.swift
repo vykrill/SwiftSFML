@@ -277,4 +277,11 @@ public class RenderWindow {
     public func clear(fillColor: Color = Color.black) {
         sfRenderWindow_clear(self.window, fillColor)
     }
+    
+    /// Draw a `CricleShape` in the window.
+    ///
+    /// - parameter shape: The shape to draw.
+    public func draw(_ shape: CircleShape) {
+        sfRenderWindow_drawCircleShape(self.window, shape.shape, nil)
+    }
 }
