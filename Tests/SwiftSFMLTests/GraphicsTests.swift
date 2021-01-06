@@ -60,6 +60,7 @@ final class GraphicsTests: XCTestCase {
     func testTextures() {
         let url = URL(fileURLWithPath: "/foo.png")
         var tex = Texture(fromURL: url, withArea: nil)
+        tex = Texture(width: 512, height: 512)
         print(tex)
     }
 
