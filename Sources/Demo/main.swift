@@ -36,8 +36,7 @@ while window.isOpen {
         case .closed:
             window.close()
         case let .resized(width, height):
-            // window.setTitle(to: "SwiftSFML Demo - w: \(width), h: \(height) é".utf8CString)
-            window.setTitle(to: "SwiftSFML Demo - w: \(width), h: \(height) é")
+            print("Resized \(width) - \(height)")
         case let .keyPressed(data):
             // We can change the window background with le left and right arrows.
             switch data.code {
