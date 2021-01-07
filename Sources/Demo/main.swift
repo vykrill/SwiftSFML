@@ -1,28 +1,50 @@
 import SwiftSFML
+import Foundation
 
 print("Hello")
 
+/// The stating width of the window.
 let defaultWidth = 640
+/// The starting height of the window.
 let defaultHeight = 480
 
 /// The radius of the circle.
-let radius: Float = 50.0
+let radius: Float = 200.0
+/// The minimum dimension of the window (not cuurrently used).
 let minSize = UInt32(2 * radius)
 
+/// The adress of the image
+let imageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
+print("Path to the image: \(imageURL?.path ?? "Image not found")")
+/// The texture used by the circle shape.
+let texture = Texture(fromURL: imageURL!, withArea: nil)
+/// If the texture is shown.
+var showTexture = true
+
+/// The current background hue.
 var currentHue: Double = 0
 
+/// The settings used to create the window.
 var settings = ContextSettings()
 settings.antialiasingLevel = 8
 
-// Circle shape
+/// A circle shape
 var circle = CircleShape(radius: radius)
+// The circle will appear at the center of the window.
 circle.origin = Vector2F(x: radius, y: radius)
 circle.position = Vector2F(x: Float(defaultWidth) / 2, y: Float(defaultHeight) / 2)
+// Appearance of the circle.
 circle.outlineColor = .black
 circle.outlineThickness = 10.0
 circle.fillColor = .white
+circle.pointCount = 80
+// Texture of the circle
+circle.texture = texture
+circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
+/// The event storage.
 var event = Event.unknown
+/// The main window.
 var window = RenderWindow(
     mode: VideoMode(width: 640, height: 480, bitsPerPixel: 32), 
     title: "SwiftSFML Demo",
@@ -30,22 +52,37 @@ var window = RenderWindow(
     settings: settings
 )
 
+// Main loop
 while window.isOpen {
+    // We poll all the event that occureed since the last iteration.
     while window.poll(event: &event) {
         switch event {
         case .closed:
+            // We close the window, which will break the main loop.
             window.close()
         case let .resized(width, height):
             print("Resized \(width) - \(height)")
         case let .keyPressed(data):
-            // We can change the window background with le left and right arrows.
             switch data.code {
             case .left:
+                // Shift the background color.
                 currentHue -= 1
                 if currentHue < 0 { currentHue = 359}
             case .right:
+                // Shift the background color.
                 currentHue += 1
                 if currentHue >= 360 { currentHue = 0}
+            case .r:
+                // Resets the texture rect of the cicle.
+                circle.resetTextureRect()
+            case .s:
+                // We toggle the smoothness of the texture.
+                texture!.isSmooth.toggle()
+            case .t:
+                // We toggle the appearance of the texture.
+                showTexture.toggle()
+                circle.texture = showTexture == true ? texture : nil
+                circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
             default:
                 break
             }
@@ -53,9 +90,11 @@ while window.isOpen {
             break
         }
     }
+
+    // We clear the content of the window.
     window.clear(fillColor: Color(h: currentHue, s: 1, v: 1))
-
+    // We draw inside it.
     window.draw(circle)
-
+    // We update the on-screen content.
     window.display()
 }
