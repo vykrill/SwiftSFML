@@ -8,7 +8,66 @@ import CSFML
 public class Sprite {
     internal var sprite: OpaquePointer
 
-    public var texture: Texture?
+    public var texture: Texture? {
+        didSet { self.setupTexture() }
+    }
+
+    // Computed properties
+    
+    /// The global color of the sprite.
+    ///
+    /// This color is modulated (multiplied) with the sprite's texture. It can be used to colorize the sprite, or
+    /// change its global opacity. By default, the sprite's color is opaque white.
+    public var color: Color {
+        get { sfSprite_getColor(self.sprite) }
+        set { sfSprite_setColor(self.sprite, newValue) }
+    }
+
+    /// The local origin of the sprite.
+    ///
+    /// The origin of an object defines the center point for all transformations (position, scale, rotation). The
+    /// coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations
+    /// (position, scale, rotation). The default origin of a sprite Sprite object is (0, 0).
+    public var origin: Vector2F {
+        get { sfSprite_getOrigin(self.sprite) }
+        set { sfSprite_setOrigin(self.sprite, newValue) }
+    }
+
+    /// The position of the sprite.
+    ///
+    /// This member completely overwrites the previous position. See the `move(by:)` function to apply an offset based
+    /// on the previous position instead. The default position of a `Sprite` object is (0, 0).
+    public var position: Vector2F {
+        get { sfSprite_getPosition(self.sprite) }
+        set { sfSprite_setPosition(self.sprite, newValue) }
+    }
+
+    /// The orientation of the sprite in degrees.
+    ///
+    /// This member completely overwrites the previous rotation. See the `rotate(by:)` method to add an angle based
+    /// on the previous rotation instead. The default rotation of a `Sprite` object is 0.
+    public var rotation: Float {
+        get { sfSprite_getRotation(self.sprite) }
+        set { sfSprite_setRotation(self.sprite, newValue) }
+    }
+
+    /// The scale factor of the sprite.
+    ///
+    /// This memebre completely overwrites the previous scale. See the `scale(by:)` method to add a factor based on the
+    /// previous scale instead. The default scale of a `Sprite` object is (1, 1).
+    public var scale: Vector2F {
+        get { sfSprite_getScale(self.sprite) }
+        set { sfSprite_setScale(self.sprite, newValue) }
+    }
+
+    /// The sub-rectangle of the texture that a sprite will display.
+    /// 
+    /// The texture rect is useful when you don't want to display the whole texture, but rather a part of it. By
+    /// default, the texture rect covers the entire texture.
+    public var textureRect: RectI {
+        get { sfSprite_getTextureRect(self.sprite) }
+        set { sfSprite_setTextureRect(self.sprite, newValue) }
+    }
 
     /// Creates a sprite with no source texture.
     public init() {
@@ -25,19 +84,16 @@ public class Sprite {
         self.texture = sprite.texture
     }
 
-    public convenience init(from texture: Texture, rect: RectI? = nil) {
+    /// Creates a sprite from a texture.
+    public convenience init(from texture: Texture, textureRect: RectI? = nil) {
         self.init()
         self.texture = texture
+        self.setupTexture()
         
-        if rect != nil {
-            self.textureRect = rect!
+        if textureRect != nil {
+            self.textureRect = textureRect!
         }
 
-    }
-
-    public var textureRect: RectI {
-        get { sfSprite_getTextureRect(self.sprite) }
-        set { sfSprite_setTextureRect(self.sprite, newValue) }
     }
 
     // Link `sprite` to `Texture`.
