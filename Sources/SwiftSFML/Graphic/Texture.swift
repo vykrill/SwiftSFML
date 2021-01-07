@@ -47,6 +47,11 @@ public class Texture {
             }
         }
     }
+
+    /// Copy an existing texture.
+    public init(from texture: Texture) {
+        self.texture = sfTexture_copy(texture.texture)
+    }
     
     deinit {
         sfTexture_destroy(self.texture)
