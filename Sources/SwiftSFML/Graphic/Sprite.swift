@@ -53,7 +53,7 @@ public class Sprite {
 
     /// The scale factor of the sprite.
     ///
-    /// This memebre completely overwrites the previous scale. See the `scale(by:)` method to add a factor based on the
+    /// This member completely overwrites the previous scale. See the `scale(by:)` method to add a factor based on the
     /// previous scale instead. The default scale of a `Sprite` object is (1, 1).
     public var scale: Vector2F {
         get { sfSprite_getScale(self.sprite) }
@@ -68,6 +68,32 @@ public class Sprite {
         get { sfSprite_getTextureRect(self.sprite) }
         set { sfSprite_setTextureRect(self.sprite, newValue) }
     }
+
+    // MARK: Read-only properties
+    /// The global bounding rectangle of a sprite.
+    ///
+    /// This rectangle is in global coordinates, which means that it takes in account the transformations
+    /// (translation, rotation, scale, ...) that are applied to the entity. In other words, this member is the bounds
+    /// of the sprite in the global 2D world's coordinate system.
+    public var globalBounds: RectF {
+        sfSprite_getGlobalBounds(self.sprite)
+    }
+
+    /// the inverse of the combined transform of a sprite.
+    public var inverseTransform: Transform {
+        sfSprite_getInverseTransform(self.sprite)
+    }
+
+    /// The local bounding rectangle of a sprite.
+    ///
+    /// This rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation,
+    /// scale, ...) that are applied to the entity. In other words, this memeber is the bounds of the entity in the
+    /// entity's coordinate system.
+    public var localBounds: RectF {
+        sfSprite_getLocalBounds(self.sprite)
+    }
+
+    // MARK: Initialisation and deinitialisation
 
     /// Creates a sprite with no source texture.
     public init() {
@@ -96,7 +122,13 @@ public class Sprite {
 
     }
 
-    // Link `sprite` to `Texture`.
+    deinit {
+        sfSprite_destroy(self.sprite)
+    }
+
+    // MARK: Private members.
+
+    /// Link `sprite` to `texture`.
     private func setupTexture() {
         sfSprite_setTexture(self.sprite, self.texture?.texture, 0)
     }
