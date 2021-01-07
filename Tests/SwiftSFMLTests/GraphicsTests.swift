@@ -70,10 +70,23 @@ final class GraphicsTests: XCTestCase {
         print(sprite.sprite)
     } 
 
+    func testBlendMode() {
+
+        let sourceFactor = BlendMode.Factor.zero
+        let destFactor = BlendMode.Factor.zero
+        let equation = BlendMode.Equation.add
+
+        let blend1 = BlendMode(sourceFactor: sourceFactor, destinationFactor: destFactor, blendEquation: equation)
+        let blend2 = BlendMode()
+
+        XCTAssertEqual(blend1, blend2)
+    }
+
     static var allTests = [
         ("graphicsTestColor", testColor),
         ("graphicsTestTransform", testTransform),
         ("graphicsTestTextures", testTextures),
         ("graphicTestSprite", testSprite),
+        ("graphicTestBlendMode", testBlendMode),
     ]
 }
