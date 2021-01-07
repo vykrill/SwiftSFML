@@ -138,4 +138,32 @@ public class CircleShape {
     public func scale(by factors: Vector2F) {
         sfCircleShape_scale(self.shape, factors)
     }
+
+    // MARK: Texture support
+    /// The texture of the `CircleShape`.
+    ///
+    /// The `CicleShape` instance keeps a strong reference to the texture in order to prevent it to be destroyed
+    /// when using it. To remove the texture from the shape, simply set it to `nil`
+    ///
+    /// - important: When changing the texture, the texture rect **is not** automatically adjusted to the size of
+    ///              the new texture. Use to `resetTextureRect()` function to do so.
+    public var texture: Texture? {
+        didSet {
+            sfCircleShape_setTexture(self.shape, self.texture?.texture, 0)
+        }
+    }
+
+    /// Set the sub-rectangle of the texture that a circle shape will display.
+    ///
+    /// The texture rect is useful when you don't want to display the whole texture, but rather a part of it. By
+    /// default, the texture rect covers the entire texture.
+    public var textureRect: RectI {
+        get { sfCircleShape_getTextureRect(self.shape)}
+        set { sfCircleShape_setTextureRect(self.shape, newValue) }
+    }
+
+    /// Resets the texture rect to the size of the texture.
+    public func resetTextureRect() {
+        sfCircleShape_setTexture(self.shape, self.texture?.texture, 1)
+    }
 }
