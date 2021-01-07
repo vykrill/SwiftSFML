@@ -42,11 +42,21 @@ circle.pointCount = 80
 circle.texture = texture
 circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
+/// Transform of sprite 2
+/*
+var transform = Transform()
+transform.rotate(by: -45, withCenter: Vector2F(x: 64, y: 64))
+transform.scale(by: Vector2F(x: 0.5, y: 0.5))
+*/
+
 // Sprite
 var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width: 128, height: 128))
 
 var sprite2 = Sprite(from: sprite)
-sprite2.position = Vector2F(x: Float(defaultWidth - 128), y: Float(defaultHeight - 128))
+//sprite2.scale(by: Vector2F(x: 0.5, y: 0.5))
+sprite2.position = Vector2F(x: Float(defaultWidth) - sprite2.globalBounds.width, y: Float(defaultHeight) - sprite2.globalBounds.height)
+sprite2.rotate(by: -30)
+print(sprite2.origin)
 sprite2.color = .blue
 
 
