@@ -5,6 +5,19 @@
 
 import CSFML
 
+/// Drawable representation of a texture, with its own transformations, color, etc. 
+/// 
+/// `Sprite` is a drawable class that allows to easily display a texture (or a part of it) on a render target.
+/// 
+/// `Sprite` works in combination with the `Texture` class, which loads and provides the pixel data of a given texture.
+/// 
+/// The separation of `Sprite` and `Texture` allows more flexibility and better performances: indeed a `Texture` is a
+/// heavy resource, and any operation on it is slow (often too slow for real-time applications). On the other side, a
+/// `Sprite` is a lightweight object which can use the pixel data of a `Texture` and draw it with its own
+/// transformation/color/blending attributes.
+/// 
+/// It is important to note that the `Sprite` instance doesn't copy the texture that it uses, it only keeps a strong
+/// reference to it. Thus, a `Texture` should not be destroyed while it is used by a `Sprite`.
 public class Sprite {
     internal var sprite: OpaquePointer
 
@@ -116,6 +129,10 @@ public class Sprite {
     }
 
     /// Creates a sprite from a texture.
+    ///
+    /// - parameters:
+    ///     - texture: The texture to use.
+    ///     - textureRect: The sub-rectangle of the texture to assign to the sprite.
     public convenience init(from texture: Texture, textureRect: RectI? = nil) {
         self.init()
         self.texture = texture
