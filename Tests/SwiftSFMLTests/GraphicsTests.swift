@@ -64,9 +64,16 @@ final class GraphicsTests: XCTestCase {
         print(tex)
     }
 
+    func testSprite() {
+        var sprite = Sprite.init()
+        XCTAssertNil(sprite.texture)
+        print(sprite.sprite)
+    } 
+
     static var allTests = [
         ("graphicsTestColor", testColor),
         ("graphicsTestTransform", testTransform),
-        ("graphicsTestTextures", testTextures)
+        ("graphicsTestTextures", testTextures),
+        ("graphicTestSprite", testSprite),
     ]
 }
