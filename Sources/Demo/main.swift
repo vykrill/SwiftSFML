@@ -42,6 +42,14 @@ circle.pointCount = 80
 circle.texture = texture
 circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
+// Sprite
+var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width: 128, height: 128))
+
+var sprite2 = Sprite(from: sprite)
+sprite2.position = Vector2F(x: Float(defaultWidth - 128), y: Float(defaultHeight - 128))
+sprite2.color = .blue
+
+
 /// The event storage.
 var event = Event.unknown
 /// The main window.
@@ -95,6 +103,8 @@ while window.isOpen {
     window.clear(fillColor: Color(h: currentHue, s: 1, v: 1))
     // We draw inside it.
     window.draw(circle)
+    window.draw(sprite)
+    window.draw(sprite2)
     // We update the on-screen content.
     window.display()
 }
