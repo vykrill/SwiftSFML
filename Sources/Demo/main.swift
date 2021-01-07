@@ -54,11 +54,17 @@ var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width:
 
 var sprite2 = Sprite(from: sprite)
 //sprite2.scale(by: Vector2F(x: 0.5, y: 0.5))
-sprite2.position = Vector2F(x: Float(defaultWidth) - sprite2.globalBounds.width, y: Float(defaultHeight) - sprite2.globalBounds.height)
+sprite2.position = Vector2F(
+    x: Float(defaultWidth) - sprite2.globalBounds.width,
+    y: Float(defaultHeight) - sprite2.globalBounds.height
+)
 sprite2.rotate(by: -30)
 print(sprite2.origin)
 sprite2.color = .blue
 
+// Here, we create a new, isolate texture for `sprite`.
+// We can test its idependance by maximising the window and pressing the `s` key. The new texture will not be smoothed.
+sprite.texture = Texture(from: sprite.texture!)
 
 /// The event storage.
 var event = Event.unknown
