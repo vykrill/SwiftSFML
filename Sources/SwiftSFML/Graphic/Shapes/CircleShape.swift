@@ -163,6 +163,8 @@ public class CircleShape {
     }
 
     /// Resets the texture rect to the size of the texture.
+    ///
+    /// This function does nothing if `texture` is set to nil.
     public func resetTextureRect() {
         guard let size = self.texture?.size else {
             return
