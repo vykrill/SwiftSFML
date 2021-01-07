@@ -157,6 +157,22 @@ public class Sprite {
         sfSprite_move(self.sprite, offset)
     }
 
+    /// Resets `textureRect` to be the size of the texture.
+    ///
+    /// This method does nothing if `texture` is set to `nil.`
+    public func resetTextureRect() {
+        guard self.texture != nil else {
+            return
+        }
+
+        self.textureRect = RectI(
+            left: 0, 
+            top: 0, 
+            width: Int32(self.texture!.size.x), 
+            height: Int32(self.texture!.size.y)
+        )
+    }
+
     /// Rotate a sprite.
     /// 
     /// This function adds to the current rotation of the object, unlike the `rotation` property which overwrites it.
