@@ -126,6 +126,29 @@ public class Sprite {
         sfSprite_destroy(self.sprite)
     }
 
+    // MARK: Methods
+    
+    /// Move a sprite by a given offset.
+    /// 
+    /// This function adds to the current position of the object, unlike the `position` property which overwrites it.    
+    public func move(by offset: Vector2F) {
+        sfSprite_move(self.sprite, offset)
+    }
+
+    /// Rotate a sprite.
+    /// 
+    /// This function adds to the current rotation of the object, unlike the `rotation` property which overwrites it.
+    public func rotate(by angle: Float) {
+        sfSprite_rotate(self.sprite, angle)
+    }
+
+    /// Scale the sprite.
+    /// 
+    /// This function multiplies the current scale of the object, unlike the `scale` property which overwrites it.
+    public func scale(by factors: Vector2F) {
+        sfSprite_scale(self.sprite, factors)
+    }
+
     // MARK: Private members.
 
     /// Link `sprite` to `texture`.
