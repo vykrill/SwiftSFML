@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### The Rendering Update
 #### Additions
 - Ported the `Color` struct.
+- Ported the `Transform` struct.
+- Ported the `Texture` class.
+- Ported the `CircleShape` class.
+- Added the ability to render `CircleShape` in `RenderWindow`.
 - Added a more reliable version of `setTitle()` in `RenderWindow`.
 
 ## 0.2.0 Event Update (2021/01/03)
