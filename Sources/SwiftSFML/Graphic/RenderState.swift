@@ -67,5 +67,5 @@ public struct RenderState {
 
     // MARK: Static components
     /// Special instance holding the default render states. 
-    static let `default` = BlendMode()
+    static let `default` = RenderState()
 }
