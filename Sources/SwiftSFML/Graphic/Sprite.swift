@@ -93,6 +93,11 @@ public class Sprite {
         sfSprite_getLocalBounds(self.sprite)
     }
 
+    /// Combined transform of a sprite. 
+    public var transform: Transform {
+        sfSprite_getTransform(self.sprite)
+    }
+
     // MARK: Initialisation and deinitialisation
 
     /// Creates a sprite with no source texture.
@@ -127,7 +132,7 @@ public class Sprite {
     }
 
     // MARK: Methods
-    
+
     /// Move a sprite by a given offset.
     /// 
     /// This function adds to the current position of the object, unlike the `position` property which overwrites it.    
