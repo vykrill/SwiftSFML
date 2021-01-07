@@ -164,6 +164,10 @@ public class CircleShape {
 
     /// Resets the texture rect to the size of the texture.
     public func resetTextureRect() {
-        sfCircleShape_setTexture(self.shape, self.texture?.texture, 1)
+        guard let size = self.texture?.size else {
+            return
+        }
+        
+        self.textureRect = RectI(left: 0, top: 0, width: Int32(size.x), height: Int32(size.y))
     }
 }
