@@ -54,6 +54,17 @@ final class GraphicsTests: XCTestCase {
         XCTAssertEqual(transform, Transform.identity)
         transform.rotate(by: 90)
 
+        var transform2 = Transform()
+        transform2.rotate(by: 90, withCenter: Vector2F(x: 0, y: 0))
+
+        XCTAssertEqual(transform, transform2)
+
+        transform.translate(by: Vector2F(x: 10, y: 10))
+        transform2.translate(by: Vector2F(x: 10, y: 10))
+        transform.rotate(by: 90)
+        transform2.rotate(by: 90, withCenter: Vector2F(x: 0, y: 0))
+        XCTAssertEqual(transform, transform2)
+
         print(transform.matrix)
     }
 
