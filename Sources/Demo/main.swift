@@ -43,11 +43,12 @@ circle.texture = texture
 circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
 /// Transform of sprite 2
-/*
 var transform = Transform()
-transform.rotate(by: -45, withCenter: Vector2F(x: 64, y: 64))
+print(transform)
+transform.rotate(by: 45, withCenter: Vector2F(x: 64, y: 64))
 transform.scale(by: Vector2F(x: 0.5, y: 0.5))
-*/
+
+let state = RenderState(transform)
 
 // Sprite
 var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width: 128, height: 128))
@@ -65,6 +66,8 @@ sprite2.color = .blue
 // Here, we create a new, isolate texture for `sprite`.
 // We can test its idependance by maximising the window and pressing the `s` key. The new texture will not be smoothed.
 sprite.texture = Texture(from: sprite.texture!)
+sprite.resetTextureRect()
+
 
 /// The event storage.
 var event = Event.unknown
@@ -119,7 +122,7 @@ while window.isOpen {
     window.clear(fillColor: Color(h: currentHue, s: 1, v: 1))
     // We draw inside it.
     window.draw(circle)
-    window.draw(sprite)
+    window.draw(sprite, renderState: state)
     window.draw(sprite2)
     // We update the on-screen content.
     window.display()
