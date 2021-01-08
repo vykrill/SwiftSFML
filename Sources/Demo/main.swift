@@ -43,14 +43,14 @@ circle.texture = texture
 circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
 /// Transform of sprite 2
-var transform = Transform()
+let transform = Transform()
     .translated(by: Vector2F(x: 64, y: 64))
     .scaled(by: Vector2F(x: 1.5, y: 1.5), withCenter: Vector2F(x: 128, y: 128))
     .rotated(by: 45, withCenter: Vector2F(x: 128, y: 128))
 
 print(transform)
 
-let state = RenderState(transform)
+var state = RenderState(transform)
 
 // Sprite
 var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width: 128, height: 128))
@@ -119,6 +119,12 @@ while window.isOpen {
             break
         }
     }
+
+    // We spin `sprite`.
+    state.transform.rotate(
+        by: 0.01, 
+        withCenter: Vector2F(x: sprite.globalBounds.width / 2, y: sprite.globalBounds.height / 2)
+    )
 
     // We clear the content of the window.
     window.clear(fillColor: Color(h: currentHue, s: 1, v: 1))
