@@ -281,14 +281,18 @@ public class RenderWindow {
     /// Draw a `CircleShape` in the window.
     ///
     /// - parameter shape: The shape to draw.
-    public func draw(_ shape: CircleShape) {
-        sfRenderWindow_drawCircleShape(self.window, shape.shape, nil)
+    /// - parameter renderState: The render state to use for drawing.
+    public func draw(_ shape: CircleShape, renderState: RenderState = .default) {
+        var state = renderState.csfmlRenderState
+        sfRenderWindow_drawCircleShape(self.window, shape.shape, &state)
     }
 
     /// Draw a `Sprite` in the window.
     ///
     /// - parameter sprite: The sprite to draw.
-    public func draw(_ sprite: Sprite) {
-        sfRenderWindow_drawSprite(self.window, sprite.sprite, nil)
+    /// - parameter renderState: The render state to use for drawing.
+    public func draw(_ sprite: Sprite, renderState: RenderState = .default) {
+        var state = renderState.csfmlRenderState
+        sfRenderWindow_drawSprite(self.window, sprite.sprite, &state)
     }
 }
