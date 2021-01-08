@@ -68,9 +68,31 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
     /// - parameters:
     ///     - angle: Angle of rotation in degrees.
     ///     - center: The center of rotation.
-    public mutating func rotate(by angle: Float, withCenter center: Vector2F) {
+    public mutating func rotate(by angle: Float, withCenter center: Vector2F = Vector2F(x: 0, y: 0)) {
         sfTransform_rotateWithCenter(&self, angle, center.x, center.y)
     } 
+
+    /// Returns a rotated version of this transform.
+    ///
+    /// It is very usefull for chaining tranforms:
+    ///
+    ///     let transform = Transform()
+    ///         .rotated(by: 45)
+    ///         .translated(by: Vector2F(x: 8, y: 8))
+    ///
+    /// The optional `center` parameter is provided for convenience so you can build rotation around arbitrairy points
+    /// more easily (and efficiently) than the usual *translate(-center) > rotate > translate(center)* procedure.
+    ///
+    /// - parameters:
+    ///     - angle: The angle of rotation in degrees.
+    ///     - center: The center of rotation.
+    ///
+    /// returns: A new rotated transform.
+    public func rotated(by angle: Float, withCenter center: Vector2F = Vector2F(x: 0, y: 0)) -> Transform {
+        var copy = self
+        sfTransform_rotateWithCenter(&copy, angle, center.x, center.y)
+        return copy
+    }
     
     /// Combine the current transform with a scaling. 
     ///
@@ -86,6 +108,28 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
     /// translate(center)]
     public mutating func scale(by scale: Vector2F, withCenter center: Vector2F) {
         sfTransform_scaleWithCenter(&self, scale.x, scale.y, center.x, center.y)
+    }
+
+    /// Creates a scaled copy of the current `Transform`.
+    ///
+    /// It is very usefull for chaining transformations:
+    ///
+    ///     let transform = Transform()
+    ///         .scaled(by: Vector2F(x: 2, y: 0.5))
+    ///         .rotated(by: 90)
+    ///
+    /// The optional `center` parameter is provided for convenience so you can build rotation around arbitrairy points
+    /// more easily (and efficiently) than the usual *translate(-center) > rotate > translate(center)* procedure.
+    ///
+    /// - parameters:
+    ///     - factors: The scale factors.
+    ///     - center: The center of the scaling
+    ///
+    /// - returns: A scaled copy of `self`.
+    public func scaled(by factors: Vector2F, withCenter center: Vector2F = Vector2F(x: 0, y: 0)) -> Transform {
+        var copy = self
+        sfTransform_scaleWithCenter(&copy, factors.x, factors.y, center.x, center.y)
+        return copy
     }
 
     /// Apply a transform to a 2D point. 
@@ -115,6 +159,22 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
     /// - parameter offset: The offset to apply.
     public mutating func translate(by offset: Vector2F) {
         sfTransform_translate(&self, offset.x, offset.y)
+    }
+
+    /// Creates a translated copy of the current transform.
+    ///
+    /// It is very usefull for chaining transformations:
+    ///
+    ///     let transform = Transform()
+    ///         .translated(by: Vector2F(x: 8, y: 8))
+    ///         .scaled(by: Vector2F(x: 16, y: 10))
+    ///
+    /// - parameter offset: The offset of the translation.
+    /// - returns: A translated copy of `self`.
+    public func translated(by offset: Vector2F) -> Transform {
+        var copy = self
+        sfTransform_translate(&copy, offset.x, offset.y)
+        return copy
     }
 
     // MARK: Static members
