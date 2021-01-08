@@ -9,7 +9,7 @@ let defaultWidth = 640
 let defaultHeight = 480
 
 /// The radius of the circle.
-let radius: Float = 200.0
+let radius: Float = 100.0
 /// The minimum dimension of the window (not cuurrently used).
 let minSize = UInt32(2 * radius)
 
@@ -32,7 +32,7 @@ settings.antialiasingLevel = 8
 var circle = CircleShape(radius: radius)
 // The circle will appear at the center of the window.
 circle.origin = Vector2F(x: radius, y: radius)
-circle.position = Vector2F(x: Float(defaultWidth) / 2, y: Float(defaultHeight) / 2)
+circle.position = Vector2F(x: Float(defaultWidth) - radius - 25, y: radius + 25)
 // Appearance of the circle.
 circle.outlineColor = .black
 circle.outlineThickness = 10.0
@@ -44,9 +44,11 @@ circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
 
 /// Transform of sprite 2
 var transform = Transform()
+    .translated(by: Vector2F(x: 64, y: 64))
+    .scaled(by: Vector2F(x: 1.5, y: 1.5), withCenter: Vector2F(x: 128, y: 128))
+    .rotated(by: 45, withCenter: Vector2F(x: 128, y: 128))
+
 print(transform)
-transform.rotate(by: 45, withCenter: Vector2F(x: 64, y: 64))
-transform.scale(by: Vector2F(x: 0.5, y: 0.5))
 
 let state = RenderState(transform)
 
