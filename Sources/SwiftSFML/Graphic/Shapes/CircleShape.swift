@@ -120,7 +120,7 @@ public class CircleShape {
     ///
     /// This function adds to the current position of the object, unlike `position` which overwrites it.
     /// - parameter offset: The offset to apply.
-    public func move(by offset: Vector2F) {
+    public func translate(by offset: Vector2F) {
         sfCircleShape_move(self.shape, offset)
     }
 

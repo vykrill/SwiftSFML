@@ -153,7 +153,7 @@ public class Sprite {
     /// Move a sprite by a given offset.
     /// 
     /// This function adds to the current position of the object, unlike the `position` property which overwrites it.    
-    public func move(by offset: Vector2F) {
+    public func translate(by offset: Vector2F) {
         sfSprite_move(self.sprite, offset)
     }
 
