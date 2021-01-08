@@ -54,13 +54,6 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
 
     /// Combine the current transform with a rotation.
     ///
-    /// - parameter angle: Rotation angle, in degrees.
-    public mutating func rotate(by angle: Float) {
-        sfTransform_rotate(&self, angle)
-    }
-
-    /// Combine the current transform with a rotation.
-    ///
     /// The center of rotation is provided for convenience as a second argument, so that you can build rotations around
     /// arbitrary points more easily (and efficiently) than the usual [translate(-center), rotate(angle),
     /// translate(center)].
@@ -93,21 +86,18 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
         sfTransform_rotateWithCenter(&copy, angle, center.x, center.y)
         return copy
     }
-    
-    /// Combine the current transform with a scaling. 
-    ///
-    /// - parameter scale: The scaling factors.
-    public mutating func scale(by scale: Vector2F) {
-        sfTransform_scale(&self, scale.x, scale.y)
-    }
 
     /// Combine the current transform with a scaling.
     /// 
     /// The center of scaling is provided for convenience as a second argument, so that you can build scaling around
     /// arbitrary points more easily (and efficiently) than the usual [translate(-center), scale(factors),
     /// translate(center)]
-    public mutating func scale(by scale: Vector2F, withCenter center: Vector2F) {
-        sfTransform_scaleWithCenter(&self, scale.x, scale.y, center.x, center.y)
+    ///
+    /// - parameters:
+    ///     - factors: The scale factors.
+    ///     - center: The center of the scaling. Defaults to (0, 0). 
+    public mutating func scale(by factors: Vector2F, withCenter center: Vector2F = Vector2F(x: 0, y: 0)) {
+        sfTransform_scaleWithCenter(&self, factors.x, factors.y, center.x, center.y)
     }
 
     /// Creates a scaled copy of the current `Transform`.
