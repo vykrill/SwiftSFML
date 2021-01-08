@@ -26,6 +26,11 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
         )
     }
 
+    /// Creates a identity transform.
+    public init() {
+        self = .identity
+    }
+
     public typealias ArrayLiteralElement = Float
 
     /// Return the inverse of a transform. 
