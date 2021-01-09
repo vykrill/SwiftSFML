@@ -9,7 +9,7 @@ import Foundation
 /// A window that can serve as a target for 2D rendering.
 public class RenderWindow {
     /// The underlying SFML `sf::RenderWindow` instance.
-    private var window: OpaquePointer
+    internal var window: OpaquePointer
 
     // MARK: Properties
 
