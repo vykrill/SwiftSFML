@@ -26,7 +26,8 @@ let package = Package(
             dependencies: ["CSFML"]),
         .testTarget(
             name: "SwiftSFMLTests",
-            dependencies: ["SwiftSFML"]),
+            dependencies: ["SwiftSFML"],
+            resources: [.process("Resources")]),
         .target(name: "Demo", dependencies: [.target(name: "SwiftSFML")], resources: [
             .process("Resources")
         ])
