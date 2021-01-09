@@ -121,7 +121,23 @@ public class Texture {
         return sfTexture_generateMipmap(self.texture) != 0
     }
 
-    // TODO: Add the `update()` methods.
+    /// Update a texture from an image. 
+    ///
+    /// - parameters:
+    ///     - image: The image to copy to the texture.
+    ///     - offset: The offset in the texture where to copy the source pixels.
+    public func update(from image: Image, withOffset offset: Vector2U = Vector2U(x: 0, y: 0)) {
+        sfTexture_updateFromImage(self.texture, image.image, offset.x, offset.y)
+    }
+
+    /// Update a texture from the content of a `RenderWindow`.
+    ///
+    /// - parameters:
+    ///     - window: The render window to copy to the texture.
+    ///     - offset: The offset in the texture where to copy the source pixels.
+    public func update(from window: RenderWindow, withOffset offset: Vector2U) {
+        sfTexture_updateFromRenderWindow(self.texture, window.window, offset.x, offset.y)
+    }
 
     // MARK: Static members
     /// The maximum texture size allowed. 
