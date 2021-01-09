@@ -122,6 +122,13 @@ public class RenderWindow {
         sfRenderWindow_setKeyRepeatEnabled(self.window, enabled == true ? 1 : 0)
     }
 
+    /// Changes the `RenderWindow`'s icon.
+    ///
+    /// - parameter image: The image that will be used as the new icon.
+    public func setIcon(to image: Image) {
+        sfRenderWindow_setIcon(self.window, image.size.x, image.size.y, image.getPixels())
+    }
+
     /// Grab or release the mouse cursor.
     ///
     /// If set, grabs the mouse cursor inside this window's client area so it may no longer be moved outside its bounds.

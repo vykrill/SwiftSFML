@@ -81,6 +81,12 @@ var window = RenderWindow(
     settings: settings
 )
 
+/// The window's icon.
+if let icon = Image(fromFileURL: imageURL ?? URL(fileURLWithPath: "")) {
+    print("Icon set")
+    window.setIcon(to: icon)
+}
+
 // Main loop
 while window.isOpen {
     // We poll all the event that occureed since the last iteration.
