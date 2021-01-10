@@ -52,6 +52,30 @@ extension Transform: ExpressibleByArrayLiteral, Equatable {
         return matrix
     }
 
+    /// Combines two transforms in a new one.
+    ///
+    /// The result is a transform that is equivalent to applying `self` followed by `transform`. Mathematically,
+    /// it is equivalent to a *matrix multiplication*.
+    ///
+    /// - parameter transform: The transform that `self` will be combined with.
+    /// - returns: A combination of two transforms.
+    public func combined(with transform: Transform) -> Transform {
+        var combined = self
+        var otherTransform = transform
+        sfTransform_combine(&combined, &otherTransform)
+        return combined
+    }
+
+    /// Combines `self` with another transform.
+    ///
+    /// The result is a transform that is equivalent to applying `self` followed by `transform`. Mathematically,
+    /// it is equivalent to a *matrix multiplication*.
+    ///
+    /// - parameter transform: The transform that will be combined with `self`.
+    mutating public func combine(with transform: Transform) {
+        self = self.combined(with: transform)
+    }
+
     /// Combine the current transform with a rotation.
     ///
     /// The center of rotation is provided for convenience as a second argument, so that you can build rotations around
