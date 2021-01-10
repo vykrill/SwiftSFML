@@ -32,7 +32,7 @@ public class Texture {
     ///     - area: The area of the source image to load. (`nil` to load the whole image).
     ///
     /// - returns: A new `Texture` object, or `nil` if it fails.
-    public init?(fromURL url: URL, withArea area: RectI?) {
+    public init?(fromURL url: URL, withArea area: RectI? = nil) {
         if var areaM = area {
             if let tex = sfTexture_createFromFile(url.path, &areaM) {
                 self.texture = tex
