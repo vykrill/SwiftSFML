@@ -302,4 +302,20 @@ public class RenderWindow {
         var state = renderState.csfmlRenderState
         sfRenderWindow_drawSprite(self.window, sprite.sprite, &state)
     }
+
+    /// Draws a vertex array in the window.
+    ///
+    /// - parameters:
+    ///     - vertextArray: The `VertexArray` to draw.
+    ///     - renderState: The render state to use for drawing.
+    public func draw(_ vertexArray: VertexArray, renderState: RenderState = .default) {
+        var state = renderState.csfmlRenderState
+        sfRenderWindow_drawPrimitives(
+            self.window,
+            vertexArray.vertices, 
+            vertexArray.vertices.count, 
+            sfPrimitiveType(rawValue: vertexArray.type.rawValue), 
+            &state
+        )
+    }
 }

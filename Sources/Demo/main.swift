@@ -3,6 +3,22 @@ import Foundation
 
 print("Hello")
 
+struct RectanglePrimitive: VertexArray {
+    var vertices: [Vertex] {
+        return [
+            Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color, texCoords: Vector2F(x: 0, y:0)),
+            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top), color: color, texCoords: Vector2F(x: 1, y:0)),
+            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top + rect.height), color: color, texCoords: Vector2F(x: 1, y:1)),
+            Vertex(position: Vector2F(x: rect.left, y: rect.top + rect.height), color: color, texCoords: Vector2F(x: 0, y:0))
+        ]
+    }
+    let type = PrimitiveType.quads
+
+    var rect: RectF
+    var color: Color = .white
+
+}
+
 /// The stating width of the window.
 let defaultWidth = 640
 /// The starting height of the window.
@@ -70,6 +86,9 @@ sprite2.color = .blue
 sprite.texture = Texture(from: sprite.texture!)
 sprite.resetTextureRect()
 
+/// A rectangle
+var rect = RectanglePrimitive(rect: RectF(left: 100, top: 100, width: 100, height: 100))
+rect.color = .green
 
 /// The event storage.
 var event = Event.unknown
@@ -138,6 +157,7 @@ while window.isOpen {
     window.draw(circle)
     window.draw(sprite, renderState: state)
     window.draw(sprite2)
+    window.draw(rect, renderState: state)
     // We update the on-screen content.
     window.display()
 }
