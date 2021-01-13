@@ -6,10 +6,14 @@ print("Hello")
 struct RectanglePrimitive: VertexArray {
     var vertices: [Vertex] {
         return [
-            Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color, texCoords: Vector2F(x: 0, y:0)),
-            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top), color: color, texCoords: Vector2F(x: 1, y:0)),
-            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top + rect.height), color: color, texCoords: Vector2F(x: 1, y:1)),
-            Vertex(position: Vector2F(x: rect.left, y: rect.top + rect.height), color: color, texCoords: Vector2F(x: 0, y:0))
+            Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color,
+                texCoords: Vector2F(x: 0, y:0)),
+            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top), color: color,
+                texCoords: Vector2F(x: rect.width / 2, y:0)),
+            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top + rect.height), color: color, 
+                texCoords: Vector2F(x: rect.width / 2, y: rect.height / 2)),
+            Vertex(position: Vector2F(x: rect.left, y: rect.top + rect.height), color: color, 
+                texCoords: Vector2F(x: 0, y: rect.height / 2))
         ]
     }
     let type = PrimitiveType.quads
@@ -87,8 +91,14 @@ sprite.texture = Texture(from: sprite.texture!)
 sprite.resetTextureRect()
 
 /// A rectangle
-var rect = RectanglePrimitive(rect: RectF(left: 100, top: 100, width: 100, height: 100))
+var rect = RectanglePrimitive(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
 rect.color = .green
+
+let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!)!
+rectTexture.isSmooth = true
+rectTexture.isRepeated = true
+let rectState = RenderState(rectTexture)
+print(rectState.texture)
 
 /// The event storage.
 var event = Event.unknown
@@ -145,6 +155,8 @@ while window.isOpen {
         }
     }
 
+    rect.color = Color(h: currentHue, s: 1, v: 1)
+
     // We spin `sprite`.
     state.transform.rotate(
         by: 0.01, 
@@ -152,12 +164,12 @@ while window.isOpen {
     )
 
     // We clear the content of the window.
-    window.clear(fillColor: Color(h: currentHue, s: 1, v: 1))
+    window.clear()
     // We draw inside it.
+    window.draw(rect, renderState: rectState)
     window.draw(circle)
     window.draw(sprite, renderState: state)
     window.draw(sprite2)
-    window.draw(rect, renderState: state)
     // We update the on-screen content.
     window.display()
 }
