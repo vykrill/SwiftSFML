@@ -20,6 +20,20 @@ final class DrawableTests: XCTestCase {
         }
     }
 
+    struct TestResetRectModif: Drawable {
+        var vertices = [Vertex]()
+        var origin = Vector2F()
+        var transform = Transform.identity
+        let type = PrimitiveType.lines
+        var texture: Texture?
+
+        mutating func resetTextureRect() {
+            for vertexIndex in self.vertices.indices {
+                self.vertices[vertexIndex].texCoords = Vector2F(x: 1, y: 1)
+            }
+        }
+    }
+
     func testResetRect() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -38,7 +52,15 @@ final class DrawableTests: XCTestCase {
         XCTAssertEqual(triangle.vertices[0].texCoords, Vector2F(x: 16, y: 0))
     }
 
+    func testResetRectOverriding() {
+        var shape = TestResetRectModif()
+        shape.vertices = [Vertex()]
+        shape.resetTextureRect()
+        XCTAssertEqual(shape.vertices[0].texCoords, Vector2F(x: 1, y: 1))
+    }
+
     static var allTests = [
         ("DrawableResetRectTest", testResetRect),
+        ("DrawableTestResetRectOverride", testResetRectOverriding)
     ]
 }
