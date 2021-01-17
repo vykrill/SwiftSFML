@@ -72,11 +72,11 @@ final class GraphicsTests: XCTestCase {
         let url = URL(fileURLWithPath: "/foo.png")
         var tex = Texture(fromURL: url, withArea: nil)
         tex = Texture(width: 512, height: 512)
-        print(tex)
+        print(tex as Any)
     }
 
     func testSprite() {
-        var sprite = Sprite.init()
+        let sprite = Sprite.init()
         XCTAssertNil(sprite.texture)
         print(sprite.sprite)
     } 
@@ -97,12 +97,12 @@ final class GraphicsTests: XCTestCase {
         let savedImageURL = URL(string: Bundle.main.resourcePath! + "/savedImage.png")
         let sourceImageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
         print(Bundle.module)
-        print(savedImageURL)
-        print(sourceImageURL)
+        print(String(describing: savedImageURL))
+        print(String(describing: sourceImageURL))
         print(Bundle.allBundles.count)
 
         /// Empty Image
-        var image = Image(width: 0, height: 0)
+        let image = Image(width: 0, height: 0)
         XCTAssertFalse(image.save(to: savedImageURL!))
 
         /// Normal image
