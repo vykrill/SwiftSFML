@@ -32,6 +32,6 @@ public typealias Vector2F = sfVector2f
 
 extension Vector2F: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.x == rhs.y && lhs.y == rhs.y
+        return lhs.x == rhs.x && lhs.y == rhs.y
     }
 }
