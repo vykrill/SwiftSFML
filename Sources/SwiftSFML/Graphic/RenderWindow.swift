@@ -150,20 +150,9 @@ public class RenderWindow {
     /// Change the title of the window.
     ///
     /// - parameter title: The new title.
-    /// - bug: Sometime adds extra characters to the title.
     public func setTitle(to title: String) {
         sfRenderWindow_setUnicodeTitle(self.window, title.utf32)
         // sfRenderWindow_setUnicodeTitle(self.window,[0x61, 0x61, 0x61, 0x61, 0x61])
-    }
-
-    /// Change the title of the window.
-    ///
-    /// It uses a classic `CChar` string array. Simply call the `utf8CString` method of `String` to get the
-    /// correct type.
-    ///
-    /// It seems to be more reliable than `setTitle(to: String)`.
-    public func setTitle(to utf8String: ContiguousArray<CChar>) {
-        sfRenderWindow_setTitle(self.window, utf8String.map{$0})
     }
 
     /// Enable / disable vertical synchronization on a render window. 

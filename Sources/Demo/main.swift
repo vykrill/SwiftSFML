@@ -126,6 +126,7 @@ while window.isOpen {
             window.close()
         case let .resized(width, height):
             print("Resized \(width) - \(height)")
+            window.setTitle(to: "SwiftSFML Demo - \(width) x \(height)")
         case let .keyPressed(data):
             switch data.code {
             case .left:
