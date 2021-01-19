@@ -11,19 +11,19 @@ public protocol Drawable: VertexArray {
 
 extension Drawable {
 
-    mutating func translate(by offset: Vector2F) {
+    public mutating func translate(by offset: Vector2F) {
         self.transform.translate(by: offset)
     }
 
-    mutating func scale(by factors: Vector2F) {
+    public mutating func scale(by factors: Vector2F) {
         self.transform.scale(by: factors, withCenter: origin)
     }
 
-    mutating func rotate(by angle: Float) {
+    public mutating func rotate(by angle: Float) {
         self.transform.rotate(by: angle, withCenter: origin)
     }
 
-    mutating func resetTextureRect() {
+    public mutating func resetTextureRect() {
         guard let size = self.texture?.size else {
             return
         }
