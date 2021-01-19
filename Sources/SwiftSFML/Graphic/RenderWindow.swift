@@ -307,4 +307,20 @@ public class RenderWindow {
             &state
         )
     }
+    
+    /// Draws a drawable object in the window.
+    ///
+    /// - parameters:
+    ///     - other: The `Drawable` object to draw.
+    ///     - renderState: Various parameters used for rendering.
+    ///                     Note that `renderState.texture` will be used if it is not set to `nil`. Furthermore, `other.transform` will be combined with `renderState.transform`.
+    public func draw(_ other: Drawable, renderState: RenderState = .default) {
+        var state = renderState
+        state.transform = other.transform.combined(with: renderState.transform)
+        if state.texture == nil {
+            state.texture = other.texture
+        }
+        
+        self.draw(other as VertexArray, renderState: renderState)
+    }
 }

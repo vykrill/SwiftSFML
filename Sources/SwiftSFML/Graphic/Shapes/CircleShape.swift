@@ -36,7 +36,7 @@ public class CircleShape {
 
     /// the global bounding rectangle of a circle shape.
     /// 
-    /// The returned rectangle is in global coordinates, which means that it takes in account the transformations<
+    /// The returned rectangle is in global coordinates, which means that it takes in account the transformations
     /// (translation, rotation, scale, ...) that are applied to the entity. In other words, it is the bounds of the 
     /// sprite in the global 2D world's coordinate system.
     public var globalBounds: RectF {
