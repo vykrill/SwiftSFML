@@ -2,9 +2,11 @@ import SwiftSFML
 import Foundation
 
 print("Hello")
-
+/*
 struct RectanglePrimitive: VertexArray {
+    
     var vertices: [Vertex] {
+        get {
         return [
             Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color,
                 texCoords: Vector2F(x: 0, y:0)),
@@ -15,18 +17,22 @@ struct RectanglePrimitive: VertexArray {
             Vertex(position: Vector2F(x: rect.left, y: rect.top + rect.height), color: color, 
                 texCoords: Vector2F(x: 0, y: rect.height / 2))
         ]
+        }
+        set {}
     }
     let type = PrimitiveType.quads
 
     var rect: RectF
     var color: Color = .white
 
-}
+}*/
+
+
 
 /// The stating width of the window.
-let defaultWidth = 640
+let defaultWidth: UInt32 = 640
 /// The starting height of the window.
-let defaultHeight = 480
+let defaultHeight: UInt32 = 480
 
 /// The radius of the circle.
 let radius: Float = 100.0
@@ -46,66 +52,40 @@ var currentHue: Double = 0
 
 /// The settings used to create the window.
 var settings = ContextSettings()
-settings.antialiasingLevel = 8
-
-/// A circle shape
-var circle = CircleShape(radius: radius)
-// The circle will appear at the center of the window.
-circle.origin = Vector2F(x: radius, y: radius)
-circle.position = Vector2F(x: Float(defaultWidth) - radius - 25, y: radius + 25)
-// Appearance of the circle.
-circle.outlineColor = .black
-circle.outlineThickness = 10.0
-circle.fillColor = .white
-circle.pointCount = 80
-// Texture of the circle
-circle.texture = texture
-circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
+// settings.antialiasingLevel = 8
 
 /// Transform of sprite 2
 let transform = Transform()
-    .translated(by: Vector2F(x: 64, y: 64))
-    .scaled(by: Vector2F(x: 1.5, y: 1.5), withCenter: Vector2F(x: 128, y: 128))
-    .rotated(by: 45, withCenter: Vector2F(x: 128, y: 128))
+    .translated(by: Vector2F(x: Float(defaultWidth / 2), y: Float(defaultHeight / 2)))
+    .scaled(by: Vector2F(x: 1.5, y: 1.5))
 
 print(transform)
 
 var state = RenderState(transform)
 
 // Sprite
-var sprite = Sprite(from: texture!, textureRect: RectI(left: 32, top: 32, width: 128, height: 128))
 
-var sprite2 = Sprite(from: sprite)
-//sprite2.scale(by: Vector2F(x: 0.5, y: 0.5))
-sprite2.position = Vector2F(
-    x: Float(defaultWidth) - sprite2.globalBounds.width,
-    y: Float(defaultHeight) - sprite2.globalBounds.height
-)
-sprite2.rotate(by: -30)
-print(sprite2.origin)
-sprite2.color = .blue
+var sprite = Sprite(from: texture!)
+sprite.origin = Vector2F(x: sprite.localBounds.width / 2, y: sprite.localBounds.height / 2)
 
-// Here, we create a new, isolate texture for `sprite`.
-// We can test its idependance by maximising the window and pressing the `s` key. The new texture will not be smoothed.
-sprite.texture = Texture(from: sprite.texture!)
-sprite.resetTextureRect()
 
 /// A rectangle
-var rect = RectanglePrimitive(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
-rect.color = .green
+var rect = RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
+//RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
 
-let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!)!
+guard let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!) else {
+    fatalError("Impossible to load 'vertexTexture.png'")
+}
 rectTexture.isSmooth = true
 rectTexture.isRepeated = true
 let rectState = RenderState(rectTexture)
-print(rectState.texture)
 
 /// The event storage.
 var event = Event.unknown
 /// The main window.
 var window = RenderWindow(
-    mode: VideoMode(width: 640, height: 480, bitsPerPixel: 32), 
-    title: "SwiftSFML Demo",
+    mode: VideoMode(width: defaultWidth, height: defaultHeight, bitsPerPixel: 32),
+    title: "SwiftSFML Demo - \(defaultWidth) x \(defaultHeight)",
     style: .defaultStyle,
     settings: settings
 )
@@ -137,17 +117,9 @@ while window.isOpen {
                 // Shift the background color.
                 currentHue += 1
                 if currentHue >= 360 { currentHue = 0}
-            case .r:
-                // Resets the texture rect of the cicle.
-                circle.resetTextureRect()
             case .s:
                 // We toggle the smoothness of the texture.
-                texture!.isSmooth.toggle()
-            case .t:
-                // We toggle the appearance of the texture.
-                showTexture.toggle()
-                circle.texture = showTexture == true ? texture : nil
-                circle.textureRect = RectI(left: 0, top: 0, width: 128, height: 128)
+                rectTexture.isSmooth.toggle()
             default:
                 break
             }
@@ -156,21 +128,18 @@ while window.isOpen {
         }
     }
 
-    rect.color = Color(h: currentHue, s: 1, v: 1)
+    rect.setColor(to: Color(h: currentHue, s: 1, v: 1))
 
     // We spin `sprite`.
     state.transform.rotate(
-        by: 0.01, 
-        withCenter: Vector2F(x: sprite.globalBounds.width / 2, y: sprite.globalBounds.height / 2)
+        by: 0.05
     )
 
     // We clear the content of the window.
     window.clear()
     // We draw inside it.
     window.draw(rect, renderState: rectState)
-    window.draw(circle)
     window.draw(sprite, renderState: state)
-    window.draw(sprite2)
     // We update the on-screen content.
     window.display()
 }
