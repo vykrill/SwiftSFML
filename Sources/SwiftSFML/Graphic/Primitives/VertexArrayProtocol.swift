@@ -12,14 +12,14 @@ public protocol VertexArray {
 }
 
 extension VertexArray {
-    var size: Vector2F {
+    public var size: Vector2F {
         let x = self.vertices.map({$0.position.x})
         let y = self.vertices.map({$0.position.y})
         
         return Vector2F(x: (x.max() ?? 0) - (x.min() ?? 0), y: (y.max() ?? 0) - (y.min() ?? 0))
     }
 
-    var bounds: RectF {
+    public var bounds: RectF {
         let x = self.vertices.map({$0.position.x})
         let y = self.vertices.map({$0.position.y})
 
@@ -29,5 +29,11 @@ extension VertexArray {
             width: (x.max() ?? 0) - (x.min() ?? 0), 
             height: (y.max() ?? 0) - (y.min() ?? 0)
         )
+    }
+    
+    public mutating func setColor(to color: Color) {
+        for index in self.vertices.indices {
+            self.vertices[index].color = color
+        }
     }
 }
