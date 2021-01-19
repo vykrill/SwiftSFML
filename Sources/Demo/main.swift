@@ -89,6 +89,7 @@ var window = RenderWindow(
     style: .defaultStyle,
     settings: settings
 )
+window.setFramerate(limit: 60)
 
 /// The window's icon.
 if let icon = Image(fromFileURL: imageURL ?? URL(fileURLWithPath: "")) {
@@ -132,7 +133,7 @@ while window.isOpen {
 
     // We spin `sprite`.
     state.transform.rotate(
-        by: 0.05
+        by: 1
     )
 
     // We clear the content of the window.
