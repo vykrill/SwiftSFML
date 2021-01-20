@@ -13,6 +13,11 @@ final class WindowTests: XCTestCase {
         // results.
     }
 
+    func setView(to window: RenderWindow) {
+        let view = View(rect: RectF(left: 0, top: 0, width: 355, height: 355))
+        window.setView(to: view)
+    }
+
     /// Test if `RenderWindow` is working properly
     func testRenderWindowCreation() {
         let videoMode = VideoMode(width: 640, height: 480, bitsPerPixel: 32)
@@ -35,9 +40,11 @@ final class WindowTests: XCTestCase {
         // XCTAssertEqual(renderWindow.position, Vector2I(x: 100, y: 100))
         XCTAssertEqual(renderWindow.size, Vector2U(x: 800 , y: 800))
 
-
         renderWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
         XCTAssertEqual(renderWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
+
+        setView(to: renderWindow)
+        XCTAssertEqual(renderWindow.getView().size, Vector2F(x: 355, y: 355))
 
         // We can't test this one, since the result are not guaranted.
         print(renderWindow.settings)
