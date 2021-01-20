@@ -76,7 +76,8 @@ while window.isOpen {
             window.setTitle(to: "SwiftSFML Demo - \(width) x \(height)")
 
             // We scale the background rect relative to the old size.
-            rect.scale(by: Vector2F(x: Float(width) / window.getView().size.x, y: Float(height) / window.getView().size.y))
+            let bounds = rect.getGlobalBounds()
+            rect.scale(by: Vector2F(x: Float(width) / bounds.width, y: Float(height) / bounds.height))
             
             // We adjust the view.
             let newView = View(
