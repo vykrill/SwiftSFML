@@ -34,4 +34,8 @@ extension Vector2F: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y
     }
+
+    public init<Source: BinaryInteger>(x: Source, y: Source) {
+        self.init(x: Float(x), y: Float(y))
+    }
 }
