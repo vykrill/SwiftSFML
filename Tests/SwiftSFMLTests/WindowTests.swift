@@ -22,7 +22,12 @@ final class WindowTests: XCTestCase {
         // Just to ensure our conversion from `Bool` to `sfBool` is correct.
         renderWindow.setMouseCursorVisible(to: false)
 
+        // View tests
+        let foo = renderWindow.getView()
+        print("Default: \(renderWindow.getDefaultView().size), \(renderWindow.getDefaultView().center)")
+        print(foo.size)
         renderWindow.position = Vector2I(x: 100, y: 100)
+        XCTAssertEqual(renderWindow.mapCoordsToPixel(Vector2F(x: 200, y: 200)), Vector2I(x: 200, y: 200))
         renderWindow.size = Vector2U(x: 800, y: 800)
 
         sleep(Time(seconds: 3.0))
@@ -30,12 +35,9 @@ final class WindowTests: XCTestCase {
         // XCTAssertEqual(renderWindow.position, Vector2I(x: 100, y: 100))
         XCTAssertEqual(renderWindow.size, Vector2U(x: 800 , y: 800))
 
-        // MARK: View tests
-        let foo = renderWindow.getView()
-        print(foo.rotation)
-        // XCTAssertEqual(renderWindow.mapCoordsToPixel(Vector2F(x: 200, y: 200)), Vector2I(x: 200, y: 200))
-        // renderWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
-        // XCTAssertEqual(renderWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
+
+        renderWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
+        XCTAssertEqual(renderWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
 
         // We can't test this one, since the result are not guaranted.
         print(renderWindow.settings)

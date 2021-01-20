@@ -96,9 +96,7 @@ public class RenderWindow {
     ///
     /// - returns: The active view of the window.
     public func getView() -> View {
-        let view = View(sfRenderWindow_getView(self.window))
-        print("We achieved something \(view.size)")
-        return view
+        View(sfRenderWindow_getView(self.window))
     }
 
     /// Convert a point from world coordinates to window coordinates.
@@ -117,7 +115,12 @@ public class RenderWindow {
     ///
     /// - returns: The converted point in pixels.
     public func mapCoordsToPixel(_ point: Vector2F, view: View? = nil) -> Vector2I {
-        sfRenderWindow_mapCoordsToPixel(self.window, point, view?.view ?? getView().view)
+        if let csfmlView = view?.view {
+            return sfRenderWindow_mapCoordsToPixel(self.window, point, csfmlView)
+        } else {
+            let winView = self.getView()
+            return sfRenderWindow_mapCoordsToPixel(self.window, point, winView.view)
+        }
     }
 
     /// Convert a point from window coordinates to world coordinates.
@@ -138,7 +141,12 @@ public class RenderWindow {
     ///
     /// - returns: The converted point in "world" units.
     public func mapPixelToCoords(_ pixel: Vector2I, view: View? = nil) -> Vector2F {
-        sfRenderWindow_mapPixelToCoords(self.window, pixel, view?.view ?? getView().view)
+        if let csfmlView = view?.view {
+            return sfRenderWindow_mapPixelToCoords(self.window, pixel, csfmlView)
+        } else {
+            let view2 = self.getView()
+            return sfRenderWindow_mapPixelToCoords(self.window, pixel, view2.view)
+        }
     }
 
     /// Request the current render window to be made the active foreground window.
