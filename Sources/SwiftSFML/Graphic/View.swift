@@ -46,7 +46,7 @@ public class View {
     /// Constructs a view from a rectangle
     ///
     /// - parameter rect: The zone to display. Defaults to (0, 0, 1000, 1000).
-    public init(from rect: RectF = RectF(left: 0, top: 0, width: 1000, height: 1000)) {
+    public init(rect: RectF = RectF(left: 0, top: 0, width: 1000, height: 1000)) {
         self.view = sfView_createFromRect(rect)
     }
 
