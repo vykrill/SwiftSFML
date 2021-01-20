@@ -51,12 +51,14 @@ public class View {
     }
 
     /// Copies another view.
+    /// - parameter view: The view to copy.
     public init(from view: View) {
         self.view = sfView_copy(view.view)
     }
 
     /// Creates a new 'View' from an existing 'sfView'.
-    internal init(from csfmlView: OpaquePointer) {
+    /// csfmlView: The source view.
+    internal init(_ csfmlView: OpaquePointer) {
         self.view = csfmlView
     }
 
