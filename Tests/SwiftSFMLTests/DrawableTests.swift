@@ -52,6 +52,14 @@ final class DrawableTests: XCTestCase {
         XCTAssertEqual(triangle.vertices[0].texCoords, Vector2F(x: 16, y: 0))
     }
 
+    public func testTransform() {
+        var triangle = Triangle(width: 10, height: 10)
+        triangle.scale(by: Vector2F(x: 2, y: 2))
+
+        XCTAssertEqual(triangle.getGlobalBounds(), RectF(left: 0, top: 0, width: 20, height: 20))
+        XCTAssertEqual(triangle.getGlobalBounds(), triangle.transform.transform(triangle.bounds))
+    }
+
     func testResetRectOverriding() {
         var shape = TestResetRectModif()
         shape.vertices = [Vertex()]
@@ -61,6 +69,7 @@ final class DrawableTests: XCTestCase {
 
     static var allTests = [
         ("DrawableResetRectTest", testResetRect),
-        ("DrawableTestResetRectOverride", testResetRectOverriding)
+        ("DrawableTestResetRectOverride", testResetRectOverriding),
+        ("DrawableTestTransform", testTransform)
     ]
 }
