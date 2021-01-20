@@ -66,6 +66,11 @@ public class View {
         self.view = sfView_createFromRect(rect)
     }
 
+    public convenience init(center: Vector2F, size: Vector2F) {
+        let rect = RectF(left: center.x - (size.x / 2), top: center.y - (size.y / 2), width: size.x, height: size.y)
+        self.init(rect: rect)
+    }
+
     /// Copies another view.
     /// - parameter view: The view to copy.
     public init(from view: View) {
