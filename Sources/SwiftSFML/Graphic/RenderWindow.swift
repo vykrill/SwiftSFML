@@ -81,6 +81,66 @@ public class RenderWindow {
         sfRenderWindow_display(self.window)
     }
 
+    /// Gets the default view of the window.
+    ///
+    /// It is the view used by the `RenderWindow` if you don't use `setView`. It maches the the window's size 1:1.
+    /// This can be useful if you want to define your own view based on it, or restore it to draw fixed entities
+    /// (like a GUI) on top of your scene. 
+    ///
+    /// - returns: The default view of the render window 
+    public func getDefaultView() -> View {
+        View(sfRenderWindow_getDefaultView(self.window))
+    }
+
+    /// Get the current active view of the render window. 
+    ///
+    /// - returns: The active view of the window.
+    public func getView() -> View {
+        let view = View(sfRenderWindow_getView(self.window))
+        print("We achieved something \(view.size)")
+        return view
+    }
+
+    /// Convert a point from world coordinates to window coordinates.
+    /// 
+    /// This function finds the pixel of the render-window that matches the given 2D point. In other words, it goes
+    /// through the same process as the graphics card, to compute the final position of a rendered point.
+    /// 
+    /// Initially, both coordinate systems (world units and target pixels) match perfectly. But if you define a custom
+    /// view or resize your render-window, this assertion is not true anymore, ie. a point located at (150, 75) in
+    /// your 2D world may map to the pixel (10, 50) of your render-window – if the view is translated by (140, 25).
+    ///
+    /// - parameters:
+    ///     - point: The point to convert.
+    ///     - view: The view to use to convert the point. If set to `nil`, the function uses the current view of the
+    ///             render window.
+    ///
+    /// - returns: The converted point in pixels.
+    public func mapCoordsToPixel(_ point: Vector2F, view: View? = nil) -> Vector2I {
+        sfRenderWindow_mapCoordsToPixel(self.window, point, view?.view ?? getView().view)
+    }
+
+    /// Convert a point from window coordinates to world coordinates.
+    /// 
+    /// This function finds the 2D position that matches the given pixel of the render-window. In other words,
+    /// it does the inverse of what the graphics card does, to find the initial position of a rendered pixel.
+    /// 
+    /// Initially, both coordinate systems (world units and target pixels) match perfectly. But if you define a custom
+    /// view or resize your render-window, this assertion is not true anymore, ie. a point located at (10, 50) in your
+    /// render-window may map to the point (150, 75) in your 2D world – if the view is translated by (140, 25).
+    /// 
+    /// This function is typically used to find which point (or object) is located below the mouse cursor.
+    ///
+    /// - parameters: 
+    ///     - pixel: The pixel position to convert.
+    ///     - view: The view used to do the conversion. If set to `nil`, the function will use the current view of the 
+    ///             render window.
+    ///
+    /// - returns: The converted point in "world" units.
+    public func mapPixelToCoords(_ pixel: Vector2I, view: View? = nil) -> Vector2F {
+        sfRenderWindow_mapPixelToCoords(self.window, pixel, view?.view ?? getView().view)
+    }
+
     /// Request the current render window to be made the active foreground window.
     ///
     /// At any given time, only one window may have the input focus to receive input events such as keystrokes or
@@ -160,6 +220,21 @@ public class RenderWindow {
     /// - parameter enabled: `true` to enable V-Sync, `false` to disable it.
     public func setVerticalSync(enabled: Bool) {
         sfRenderWindow_setVerticalSyncEnabled(self.window, enabled == true ? 1 : 0)
+    }
+
+    /// Changes the current active view of a window.
+    ///
+    /// When you call `setView`, the render-target makes a copy of the view, and doesn't store a pointer to the one that
+    /// is passed. This means that whenever you update your view, you need to call setView again to apply the
+    /// modifications.
+    ///
+    ///
+    /// Don't be afraid to copy views or create them on the fly, they aren't expensive objects (they just hold a
+    /// few floats).
+    ///
+    /// - parameter view: The view to apply. 
+    public func setView(to view: View) {
+        sfRenderWindow_setView(self.window, view.view)
     }
 
     /// Show or hide a render window. 
