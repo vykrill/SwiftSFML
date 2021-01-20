@@ -114,7 +114,7 @@ final class GraphicsTests: XCTestCase {
     }
 
     func testView() {
-        var view = View()
+        let view = View()
         XCTAssertEqual(view.size, Vector2F(x: 1000, y: 1000))
 
     }
