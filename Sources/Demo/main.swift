@@ -38,6 +38,7 @@ sprite.origin = Vector2F(x: sprite.localBounds.width / 2, y: sprite.localBounds.
 /// A rectangle
 var rect = RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
 rect.origin = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
+rect.position = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
 
 guard let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!) else {
     fatalError("Impossible to load 'vertexTexture.png'")

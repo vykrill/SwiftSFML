@@ -7,8 +7,7 @@ final class DrawableTests: XCTestCase {
     struct Triangle: Drawable {
         var vertices: [Vertex]
         let type = PrimitiveType.triangles
-        var origin = Vector2F()
-        var transform = Transform.identity
+        var transformations = TransformHandler()
         var texture: Texture?
 
         init(width: Float, height: Float) {
@@ -22,8 +21,7 @@ final class DrawableTests: XCTestCase {
 
     struct TestResetRectModif: Drawable {
         var vertices = [Vertex]()
-        var origin = Vector2F()
-        var transform = Transform.identity
+        var transformations = TransformHandler()
         let type = PrimitiveType.lines
         var texture: Texture?
 
@@ -53,7 +51,7 @@ final class DrawableTests: XCTestCase {
     }
 
     public func testTransform() {
-        var triangle = Triangle(width: 10, height: 10)
+        let triangle = Triangle(width: 10, height: 10)
         triangle.scale(by: Vector2F(x: 2, y: 2))
 
         XCTAssertEqual(triangle.getGlobalBounds(), RectF(left: 0, top: 0, width: 20, height: 20))

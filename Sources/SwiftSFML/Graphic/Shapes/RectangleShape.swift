@@ -17,8 +17,7 @@ public struct RectangleShape: Drawable {
         }
     }
     
-    public var origin = Vector2F()
-    public var transform = Transform.identity
+    public var transformations = TransformHandler()
     public var texture: Texture?
     
     public let type: PrimitiveType = .quads

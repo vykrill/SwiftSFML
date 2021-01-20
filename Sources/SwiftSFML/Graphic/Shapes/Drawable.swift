@@ -7,13 +7,9 @@
 ///
 /// By opposition to a simple `VertexArray`, `Drawable` stores a texture and its transforms. This eliminates the need
 /// for passing a `RenderState` instance in the `draw` function.
-public protocol Drawable: VertexArray {
+public protocol Drawable: VertexArray, Transformable {
     /// The texture of the object.
     var texture: Texture? { get }
-    /// The transformations that will be applied to the object when drawn.
-    var transform: Transform { get set }
-    /// The default origin of the transformations.
-    var origin: Vector2F { get }
 }
 
 extension Drawable {
@@ -22,30 +18,14 @@ extension Drawable {
         return self.transformed().bounds
     }
 
-    /// Translates `self` by the given offset.
-    ///
-    /// - parameter offset: The offset to apply.
-    public mutating func translate(by offset: Vector2F) {
-        self = self.translated(by: offset)
-    }
-
     /// Creates a translated copy of the `self`.
     ///
     /// - parameter offset: The offset to apply.
     /// - returns: A translated copy of self.
     public func translated(by offset: Vector2F) -> Self {
-        var copy = self
-        copy.transform.translate(by: offset)
+        let copy = self
+        copy.translate(by: offset)
         return copy
-    }
-
-    /// Scale `self` by the given factors.
-    ///
-    /// - parameters:
-    ///     - factors: The scale factors on the X and Y axis.
-    ///     - center: The center of the scaling. Leave to `nil` to use the object's origin.
-    public mutating func scale(by factors: Vector2F, withCenter center: Vector2F? = nil) {
-        self = self.scaled(by: factors, withCenter: center)
     }
 
     /// Creates a scaled copy of `self`.
@@ -56,17 +36,9 @@ extension Drawable {
     ///
     /// - returns: A copy of `self`, scaled by the given factors.
     public func scaled(by factors: Vector2F, withCenter center: Vector2F? = nil) -> Self {
-        var copy = self
-        copy.transform.scale(by: factors, withCenter: center ?? self.origin)
+        let copy = self
+        copy.scale(by: factors)
         return copy
-    }
-
-    /// Rotates `self`.
-    ///
-    /// - parameter angle: The angle of rotation in degrees.
-    /// - parameter center: The center of rotation. Leave to `nil` to use the object's origin.
-    public mutating func rotate(by angle: Float, withCenter center: Vector2F? = nil) {
-        self = self.rotated(by: angle, withCenter: center)
     }
 
     /// Creates a rotated copy of `self`.
@@ -77,8 +49,8 @@ extension Drawable {
     ///
     /// - returns: A copy of `self` rotated by the given angle.
     public func rotated(by angle: Float, withCenter center: Vector2F? = nil) -> Self {
-        var copy = self
-        copy.transform.rotate(by: angle, withCenter: center ?? self.origin)
+        let copy = self
+        copy.rotate(by: angle)
         return copy
     }
 
@@ -113,7 +85,7 @@ extension Drawable {
             return newPoint 
         }
 
-        transformed.transform = .identity
+        transformed.transformations = TransformHandler()
 
         return transformed
     }
