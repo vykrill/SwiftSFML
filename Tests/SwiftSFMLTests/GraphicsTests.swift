@@ -113,6 +113,12 @@ final class GraphicsTests: XCTestCase {
         XCTAssertTrue(image2!.save(to: savedImageURL!))
     }
 
+    func testView() {
+        var view = View()
+        XCTAssertEqual(view.size, Vector2F(x: 1000, y: 1000))
+
+    }
+
     static var allTests = [
         ("graphicsTestColor", testColor),
         ("graphicsTestTransform", testTransform),
@@ -120,5 +126,6 @@ final class GraphicsTests: XCTestCase {
         ("graphicTestSprite", testSprite),
         ("graphicTestBlendMode", testBlendMode),
         ("graphicTestImage", testImage),
+        ("graphicTestView", testView)
     ]
 }
