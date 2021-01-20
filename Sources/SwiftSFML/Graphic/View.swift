@@ -8,6 +8,22 @@
 import CSFML
 import Foundation
 
+/// 2D camera that defines what region is shown on screen
+/// 
+/// `View` defines a camera in the 2D scene.
+/// 
+/// This is a very powerful concept: you can scroll, rotate or zoom the entire scene without altering the way that your
+/// drawable objects are drawn.
+/// 
+/// A view is composed of a source rectangle, which defines what part of the 2D scene is shown, and a target viewport,
+/// which defines where the contents of the source rectangle will be displayed on the render target (window or texture).
+/// 
+/// The viewport allows to map the scene to a custom part of the render target, and can be used for split-screen or for
+/// displaying a minimap, for example. If the source rectangle doesn't have the same size as the viewport, its contents
+/// will be stretched to fit in.
+/// 
+/// To apply a view, you have to assign it to the render target. Then, objects drawn in this render target will be
+/// affected by the view until you use another view.
 public class View {
     /// The underlying sfView instance.
     internal var view: OpaquePointer
@@ -59,7 +75,7 @@ public class View {
     /// Creates a new 'View' from an existing 'sfView'.
     /// csfmlView: The source view.
     internal init(_ csfmlView: OpaquePointer) {
-        self.view = csfmlView
+        self.view = sfView_copy(csfmlView)
     }
 
     deinit {
