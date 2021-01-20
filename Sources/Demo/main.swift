@@ -1,43 +1,12 @@
 import SwiftSFML
 import Foundation
 
-print("Hello")
-/*
-struct RectanglePrimitive: VertexArray {
-    
-    var vertices: [Vertex] {
-        get {
-        return [
-            Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color,
-                texCoords: Vector2F(x: 0, y:0)),
-            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top), color: color,
-                texCoords: Vector2F(x: rect.width / 2, y:0)),
-            Vertex(position: Vector2F(x: rect.left + rect.width, y: rect.top + rect.height), color: color, 
-                texCoords: Vector2F(x: rect.width / 2, y: rect.height / 2)),
-            Vertex(position: Vector2F(x: rect.left, y: rect.top + rect.height), color: color, 
-                texCoords: Vector2F(x: 0, y: rect.height / 2))
-        ]
-        }
-        set {}
-    }
-    let type = PrimitiveType.quads
-
-    var rect: RectF
-    var color: Color = .white
-
-}*/
-
-
+print("Welcom to SwiftSFML")
 
 /// The stating width of the window.
 let defaultWidth: UInt32 = 640
 /// The starting height of the window.
 let defaultHeight: UInt32 = 480
-
-/// The radius of the circle.
-let radius: Float = 100.0
-/// The minimum dimension of the window (not cuurrently used).
-let minSize = UInt32(2 * radius)
 
 /// The adress of the image
 let imageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
@@ -52,26 +21,23 @@ var currentHue: Double = 0
 
 /// The settings used to create the window.
 var settings = ContextSettings()
-// settings.antialiasingLevel = 8
+settings.antialiasingLevel = 8
 
 /// Transform of sprite 2
 let transform = Transform()
     .translated(by: Vector2F(x: Float(defaultWidth / 2), y: Float(defaultHeight / 2)))
     .scaled(by: Vector2F(x: 1.5, y: 1.5))
 
-print(transform)
-
 var state = RenderState(transform)
 
 // Sprite
-
 var sprite = Sprite(from: texture!)
 sprite.origin = Vector2F(x: sprite.localBounds.width / 2, y: sprite.localBounds.height / 2)
 
 
 /// A rectangle
 var rect = RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
-//RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
+rect.origin = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
 
 guard let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!) else {
     fatalError("Impossible to load 'vertexTexture.png'")
@@ -106,8 +72,20 @@ while window.isOpen {
             // We close the window, which will break the main loop.
             window.close()
         case let .resized(width, height):
-            print("Resized \(width) - \(height)")
+            // We change the title.
             window.setTitle(to: "SwiftSFML Demo - \(width) x \(height)")
+
+            // We scale the background rect relative to the old size.
+            rect.scale(by: Vector2F(x: Float(width) / window.getView().size.x, y: Float(height) / window.getView().size.y))
+            
+            // We adjust the view.
+            let newView = View(
+                center: Vector2F(x: defaultWidth / 2, y: defaultHeight / 2), 
+                size: Vector2F(x: width, y: height)
+            )
+            window.setView(to: newView)
+
+            //print(rect.transform)
         case let .keyPressed(data):
             switch data.code {
             case .left:
