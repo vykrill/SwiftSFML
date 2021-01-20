@@ -404,6 +404,6 @@ public class RenderWindow {
             state.texture = other.texture
         }
         
-        self.draw(other as VertexArray, renderState: renderState)
+        self.draw(other as VertexArray, renderState: state)
     }
 }
