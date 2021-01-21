@@ -3,6 +3,13 @@ import XCTest
 
 
 final class WindowTests: XCTestCase {
+    
+    // On macOS, the test suite crashes if we put this variable inside a test.
+    var testWindow = RenderWindow(
+        mode: VideoMode(width: 500, height: 500, bitsPerPixel: 32),
+        title: "Test Window"
+    )
+    
     func testParameters() {
         let style: WindowStyle = [.titlebar, .close, .resize]
 
@@ -20,36 +27,37 @@ final class WindowTests: XCTestCase {
 
     /// Test if `RenderWindow` is working properly
     func testRenderWindowCreation() {
-        let videoMode = VideoMode(width: 640, height: 480, bitsPerPixel: 32)
-        // If we do not provide a name, the window does't appear on screen.
-        let renderWindow = RenderWindow(mode: videoMode, title: "Swift SFML", style: .defaultStyle)
+        
+        testWindow.clear()
+        testWindow.display()
 
         // Just to ensure our conversion from `Bool` to `sfBool` is correct.
-        renderWindow.setMouseCursorVisible(to: false)
+        testWindow.setMouseCursorVisible(to: false)
 
         // View tests
-        let foo = renderWindow.getView()
-        print("Default: \(renderWindow.getDefaultView().size), \(renderWindow.getDefaultView().center)")
+        let foo = testWindow.getView()
+        print("Default: \(testWindow.getDefaultView().size), \(testWindow.getDefaultView().center)")
         print(foo.size)
-        renderWindow.position = Vector2I(x: 100, y: 100)
-        XCTAssertEqual(renderWindow.mapCoordsToPixel(Vector2F(x: 200, y: 200)), Vector2I(x: 200, y: 200))
-        renderWindow.size = Vector2U(x: 800, y: 800)
+        testWindow.position = Vector2I(x: 100, y: 100)
+        XCTAssertEqual(testWindow.mapCoordsToPixel(Vector2F(x: 200, y: 200)), Vector2I(x: 200, y: 200))
+        testWindow.size = Vector2U(x: 800, y: 800)
 
         sleep(Time(seconds: 3.0))
+        
         // This seems to be flawed, or the operating system has the final word on the window's position.
         // XCTAssertEqual(renderWindow.position, Vector2I(x: 100, y: 100))
-        XCTAssertEqual(renderWindow.size, Vector2U(x: 800 , y: 800))
+        XCTAssertEqual(testWindow.size, Vector2U(x: 800 , y: 800))
+ 
+        testWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
+        XCTAssertEqual(testWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
 
-        renderWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
-        XCTAssertEqual(renderWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
-
-        setView(to: renderWindow)
-        XCTAssertEqual(renderWindow.getView().size, Vector2F(x: 355, y: 355))
+        setView(to: testWindow)
+        XCTAssertEqual(testWindow.getView().size, Vector2F(x: 355, y: 355))
 
         // We can't test this one, since the result are not guaranted.
-        print(renderWindow.settings)
+        print(testWindow.settings)
     }
-
+    
     func testEvent() {
         let event = Event.resized(width: 100, height: 100)
         
@@ -64,6 +72,6 @@ final class WindowTests: XCTestCase {
     static var allTests = [
         ("windowTestParameters", testParameters),
         ("windowTestCreation", testRenderWindowCreation),
-        ("windowEventTest", testEvent)
+        ("windowEventTest", testEvent),
     ]
 }
