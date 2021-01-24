@@ -1,17 +1,29 @@
+// Demo.swift
+// By: Jérémy Goyette
+// For: SwiftSFML
+// On: 2021/01/02
+// 
+// This is a little demo covering many functionalities of SwiftSFML. Its main usage thought is to test the new
+// features added to the package in an other context than Units Tests.
+//
+// It contains a textured background and many little spinning icons, behind a larger one at the middle of the window.
+// You can use the left and right arrows on the keyboard to change the backround color and the 's' key to toggle the 
+// smooth filter on the background. 
+
 import SwiftSFML
 import Foundation
 
-print("Welcom to SwiftSFML")
+print("Welcome to SwiftSFML!")
 
-/// The stating width of the window.
+/// The default width of the window.
 let defaultWidth: UInt32 = 640
-/// The starting height of the window.
+/// The default height of the window.
 let defaultHeight: UInt32 = 480
 
-/// The adress of the image
+/// The adress of the center image.
 let imageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
 print("Path to the image: \(imageURL?.path ?? "Image not found")")
-/// The texture used by the circle shape.
+/// The texture used by `sprite`.
 let texture = Texture(fromURL: imageURL!, withArea: nil)
 /// If the texture is shown.
 var showTexture = true
@@ -23,29 +35,48 @@ var currentHue: Double = 0
 var settings = ContextSettings()
 settings.antialiasingLevel = 8
 
-/// Transform of sprite 2
+/// The basic transformation of `sprite`.
 let transform = Transform()
     .translated(by: Vector2F(x: Float(defaultWidth / 2), y: Float(defaultHeight / 2)))
     .scaled(by: Vector2F(x: 1.5, y: 1.5))
 
+/// The state that will be used to rotate the sprite.
 var state = RenderState(transform)
 
-// Sprite
+/// The spinning sprite at the middle of the window.
 var sprite = Sprite(from: texture!)
+// We set the origin to the middle of the sprite.
 sprite.origin = Vector2F(x: sprite.localBounds.width / 2, y: sprite.localBounds.height / 2)
 
-
-/// A rectangle
+/// The background rectangle
 var rect = RectangleShape(rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)))
 rect.origin = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
 rect.position = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
 
+/// The background texture.
 guard let rectTexture = Texture(fromURL: Bundle.module.url(forResource: "vertexTexture", withExtension: "png")!) else {
     fatalError("Impossible to load 'vertexTexture.png'")
 }
 rectTexture.isSmooth = true
 rectTexture.isRepeated = true
 let rectState = RenderState(rectTexture)
+
+/// The texture for the tiled background.
+let renderTexture = RenderTexture(width: 64, height: 64)
+renderTexture.isRepeated = true
+/// The state of `sprite` for the background.
+var renderStateTexture = RenderState()
+renderStateTexture.transform = Transform.identity
+    .translated(by: Vector2F(x: 32, y: 32))
+    .scaled(by: Vector2F(x: 50 / Float(texture!.size.x), y: 50 / Float(texture!.size.y)))
+/// The object responsible for drawing the tiled background.
+var tiledRect = RectangleShape(
+    rect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)),
+    textureRect: RectF(left: 0, top: 0, width: Float(defaultWidth), height: Float(defaultHeight)),
+    color: Color(r: 255, g: 255, b: 255, a: 127))
+tiledRect.origin = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
+tiledRect.position = tiledRect.origin
+tiledRect.texture = renderTexture.texture
 
 /// The event storage.
 var event = Event.unknown
@@ -56,6 +87,7 @@ var window = RenderWindow(
     style: .defaultStyle,
     settings: settings
 )
+// This stabilise the framerate. Since our animation if frame-based, the animation speed would otherwise vary easily.
 window.setFramerate(limit: 60)
 
 /// The window's icon.
@@ -76,9 +108,12 @@ while window.isOpen {
             // We change the title.
             window.setTitle(to: "SwiftSFML Demo - \(width) x \(height)")
 
-            // We scale the background rect relative to the old size.
+            // We scale the background to fill the window.
             let bounds = rect.getGlobalBounds()
-            rect.scale(by: Vector2F(x: Float(width) / bounds.width, y: Float(height) / bounds.height))
+            let factor = Vector2F(x: Float(width) / bounds.width, y: Float(height) / bounds.height)
+            rect.scale(by: factor)
+            tiledRect.scale(by: factor)
+            tiledRect.setTextureRect(to: RectF(left: 0, top: 0, width: Float(width), height: Float(height)))
             
             // We adjust the view.
             let newView = View(
@@ -86,8 +121,6 @@ while window.isOpen {
                 size: Vector2F(x: width, y: height)
             )
             window.setView(to: newView)
-
-            //print(rect.transform)
         case let .keyPressed(data):
             switch data.code {
             case .left:
@@ -109,17 +142,23 @@ while window.isOpen {
         }
     }
 
+    // We adjust the background color.
     rect.setColor(to: Color(h: currentHue, s: 1, v: 1))
 
     // We spin `sprite`.
-    state.transform.rotate(
-        by: 1
-    )
+    state.transform.rotate(by: 1)
+    renderStateTexture.transform.rotate(by: -1)
+
+    // Rendering of the render texture.
+    renderTexture.clear(withColor: .transparent)
+    renderTexture.draw(sprite, renderState: renderStateTexture)
+    renderTexture.display()
 
     // We clear the content of the window.
     window.clear()
     // We draw inside it.
     window.draw(rect, renderState: rectState)
+    window.draw(tiledRect)
     window.draw(sprite, renderState: state)
     // We update the on-screen content.
     window.display()
