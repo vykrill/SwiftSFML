@@ -52,6 +52,11 @@ public class Texture {
     public init(from texture: Texture) {
         self.texture = sfTexture_copy(texture.texture)
     }
+
+    /// Creates a texture from an `sfTexture`.
+    internal init(from csfmlTexture: OpaquePointer) {
+        self.texture = csfmlTexture
+    }
     
     deinit {
         sfTexture_destroy(self.texture)
@@ -144,4 +149,21 @@ public class Texture {
     static var maximumSize: UInt {
         UInt(sfTexture_getMaximumSize())
     }
+
+    // MARK: Internal members
+
+    /// Backups the texture's data.
+    ///
+    /// This method **can only** be called by the `RenderTexture` conatining the texture
+    /// when it is destroying itself. This will prevent the texture's data to
+    /// be destroyed twice, causing a `double free()`-style error. This method
+    /// also allows the possibility to keep a strong reference to 
+    /// `RenderTexture.texture` while ditching the `RenderTexture`.
+    ///
+    /// - parameter parent: The caller of the method.
+    internal func backupTexture(caller: RenderTexture) {
+        assert(caller.texture === self,
+            "Texture.backupTexture can only be called by the owner of the texture.")
+        self.texture = sfTexture_copy(self.texture)
+    } 
 }
