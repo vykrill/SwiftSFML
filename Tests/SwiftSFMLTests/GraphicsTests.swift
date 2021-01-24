@@ -1,5 +1,6 @@
 import XCTest
 @testable import SwiftSFML
+import Foundation
 
 
 final class GraphicsTests: XCTestCase {
@@ -94,12 +95,8 @@ final class GraphicsTests: XCTestCase {
     }
 
     func testImage() {
-        let savedImageURL = URL(string: Bundle.main.resourcePath! + "/savedImage.png")
+        let savedImageURL = URL(string: FileManager.default.temporaryDirectory.path + "/savedImage.png")
         let sourceImageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
-        print(Bundle.module)
-        print(String(describing: savedImageURL))
-        print(String(describing: sourceImageURL))
-        print(Bundle.allBundles.count)
 
         /// Empty Image
         let image = Image(width: 0, height: 0)
