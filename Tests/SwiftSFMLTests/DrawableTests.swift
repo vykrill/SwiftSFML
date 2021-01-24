@@ -25,10 +25,10 @@ final class DrawableTests: XCTestCase {
         let type = PrimitiveType.lines
         var texture: Texture?
 
-        mutating func resetTextureRect() {
-            for vertexIndex in self.vertices.indices {
-                self.vertices[vertexIndex].texCoords = Vector2F(x: 1, y: 1)
-            }
+        func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F {
+            print("Yeah!")
+            let vect = Vector2F(x: 1, y: 1)
+            return vect
         }
     }
 
@@ -61,7 +61,8 @@ final class DrawableTests: XCTestCase {
     func testResetRectOverriding() {
         var shape = TestResetRectModif()
         shape.vertices = [Vertex()]
-        shape.resetTextureRect()
+        shape.setTextureRect(to: RectF(left: 0, top: 0, width: 1, height: 1))
+        
         XCTAssertEqual(shape.vertices[0].texCoords, Vector2F(x: 1, y: 1))
     }
 

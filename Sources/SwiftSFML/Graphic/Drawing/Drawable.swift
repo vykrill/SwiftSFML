@@ -10,6 +10,21 @@
 public protocol Drawable: VertexArray, Transformable {
     /// The texture of the object.
     var texture: Texture? { get }
+    /// Calculates the new texture coordinate of a vertex.
+    /// 
+    /// This function is responsible for calculating the texture coordinate of each vertex when the `resetTextureRect` and
+    /// `setTextureRect(to:)` methods are called. By default, it sets the texture coordinate to a position relative to
+    /// the position of the vertex in the vertex array. As a result, the vertex array covers as much of the texture as it
+    /// can. 
+    ///
+    /// If this behavior is not suitable for your purpose, you can override it in your custom types.
+    ///
+    /// - parameters:
+    ///     - vertex: The vertex for which a new texture coordinate is needed.
+    ///     - rect: The new texture rect that will be applied.
+    ///
+    /// - returns: The corresponding texture coordinate for `vertex`.
+    func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F
 }
 
 extension Drawable {
@@ -54,21 +69,33 @@ extension Drawable {
         return copy
     }
 
-    /// Recalculate the texture coordinates of each vertices.
+    /// Fits the current texture rect to the size of the texture.
     ///
-    /// By default, it covers the whole texture with the bounding box of the object. If this behavior doesn't suit
-    /// you, you can always implement your own version in your custom types.
+    /// This function uses the `getTextureCoordinate(for:, textureRect:)` to calculates the new texture coordinates
+    /// with a texture rect of (0, 0, texture.width, texture.height).
     public mutating func resetTextureRect() {
         guard let size = self.texture?.size else {
             return
         }
 
+        self.setTextureRect(to: RectF(left: 0, top: 0, width: Float(size.x), height: Float(size.y)))
+    }
+
+    /// Sets a new texture rect to the object.
+    ///
+    /// This method uses the `getTextureCoordinate(for:, textureRect:)` function for each vertex.
+    /// - parameter rect: The new texture rect to apply.
+    public mutating func setTextureRect(to rect: RectF) {
         for index in self.vertices.indices {
-            self.vertices[index].texCoords = Vector2F(
-                x: (self.vertices[index].position.x * Float(size.x)) / self.bounds.width,
-                y: (self.vertices[index].position.y * Float(size.y)) / self.bounds.height
-            )
+            self.vertices[index].texCoords = self.getTextureCoordinate(for: vertices[index], textureRect: rect)
         }
+    }
+
+    public func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F {
+        Vector2F(
+            x: (vertex.position.x * rect.width) / self.bounds.width + rect.left,
+            y: (vertex.position.y * rect.height) / self.bounds.height + rect.top
+        )
     }
 
     /// Creates a transformed copy of `self`.
