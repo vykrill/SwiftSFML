@@ -132,11 +132,6 @@ public class RenderTexture {
         sfRenderTexture_clear(self.target, color)
     }
 
-    /// Updates the content of the render texture.
-    public func display() {
-        sfRenderTexture_display(self.target)
-    }
-
     /// Draws a `CircleShape` in the texture.
     ///
     /// - parameters:
@@ -186,5 +181,10 @@ public class RenderTexture {
             state.texture = other.texture
         }
         self.draw(other as VertexArray, renderState: state)
+    }
+    
+    /// Updates the content of the render texture.
+    public func update() {
+        sfRenderTexture_display(self.target)
     }
 }

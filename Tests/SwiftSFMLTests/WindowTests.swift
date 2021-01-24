@@ -21,22 +21,21 @@ final class WindowTests: XCTestCase {
     }
 
     func setView(to window: RenderWindow) {
-        let view = View(rect: RectF(left: 0, top: 0, width: 355, height: 355))
-        window.setView(to: view)
+        window.view = View(rect: RectF(left: 0, top: 0, width: 355, height: 355))
     }
 
     /// Test if `RenderWindow` is working properly
     func testRenderWindowCreation() {
         
         testWindow.clear()
-        testWindow.display()
+        testWindow.update()
 
         // Just to ensure our conversion from `Bool` to `sfBool` is correct.
-        testWindow.setMouseCursorVisible(to: false)
+        testWindow.showMouseCursor(false)
 
         // View tests
-        let foo = testWindow.getView()
-        print("Default: \(testWindow.getDefaultView().size), \(testWindow.getDefaultView().center)")
+        let foo = testWindow.view
+        print("Default: \(testWindow.defaultView.size), \(testWindow.defaultView.center)")
         print(foo.size)
         testWindow.position = Vector2I(x: 100, y: 100)
         XCTAssertEqual(testWindow.mapCoordsToPixel(Vector2F(x: 200, y: 200)), Vector2I(x: 200, y: 200))
@@ -48,11 +47,11 @@ final class WindowTests: XCTestCase {
         // XCTAssertEqual(renderWindow.position, Vector2I(x: 100, y: 100))
         XCTAssertEqual(testWindow.size, Vector2U(x: 800 , y: 800))
  
-        testWindow.setView(to: View(rect: RectF(left: 0, top: 0, width: 200, height: 200)))
+        testWindow.view = View(rect: RectF(left: 0, top: 0, width: 200, height: 200))
         XCTAssertEqual(testWindow.mapPixelToCoords(Vector2I(x: 800, y: 800)), Vector2F(x:200, y: 200))
 
         setView(to: testWindow)
-        XCTAssertEqual(testWindow.getView().size, Vector2F(x: 355, y: 355))
+        XCTAssertEqual(testWindow.view.size, Vector2F(x: 355, y: 355))
 
         // We can't test this one, since the result are not guaranted.
         print(testWindow.settings)

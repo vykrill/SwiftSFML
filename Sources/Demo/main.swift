@@ -88,7 +88,7 @@ var window = RenderWindow(
     settings: settings
 )
 // This stabilise the framerate. Since our animation if frame-based, the animation speed would otherwise vary easily.
-window.setFramerate(limit: 60)
+window.setFramerateLimit(to: 60)
 
 /// The window's icon.
 if let icon = Image(fromFileURL: imageURL ?? URL(fileURLWithPath: "")) {
@@ -116,11 +116,10 @@ while window.isOpen {
             tiledRect.setTextureRect(to: RectF(left: 0, top: 0, width: Float(width), height: Float(height)))
             
             // We adjust the view.
-            let newView = View(
-                center: Vector2F(x: defaultWidth / 2, y: defaultHeight / 2), 
+            window.view = View(
+                center: Vector2F(x: defaultWidth / 2, y: defaultHeight / 2),
                 size: Vector2F(x: width, y: height)
             )
-            window.setView(to: newView)
         case let .keyPressed(data):
             switch data.code {
             case .left:
@@ -152,7 +151,7 @@ while window.isOpen {
     // Rendering of the render texture.
     renderTexture.clear(withColor: .transparent)
     renderTexture.draw(sprite, renderState: renderStateTexture)
-    renderTexture.display()
+    renderTexture.update()
 
     // We clear the content of the window.
     window.clear()
@@ -161,5 +160,5 @@ while window.isOpen {
     window.draw(tiledRect)
     window.draw(sprite, renderState: state)
     // We update the on-screen content.
-    window.display()
+    window.update()
 }

@@ -13,6 +13,15 @@ public class RenderWindow {
 
     // MARK: Properties
 
+    /// The default view of the window.
+    ///
+    /// It is the view used by the `RenderWindow` if you don't change `view`. It maches the the window's size 1:1.
+    /// This can be useful if you want to define your own view based on it, or restore it to draw fixed entities
+    /// (like a GUI) on top of your scene.
+    public var defaultView: View {
+        View(sfRenderWindow_getDefaultView(self.window))
+    }
+    
     /// Whether the render window has the input focus.
     ///
     /// At any given time, only one window may have the input
@@ -46,7 +55,20 @@ public class RenderWindow {
     public var settings: ContextSettings { 
         sfRenderWindow_getSettings(self.window)
     }
-
+    
+    /// the current active view of the render window.
+    ///
+    /// When you change the value of `view`, the render-window makes a copy of the view, and doesn't store a pointer to the one that
+    /// is passed. This means that whenever you update your view, you need to change `view` again to apply the
+    /// modifications.
+    ///
+    /// Don't be afraid to copy views or create them on the fly, they aren't expensive objects (they just hold a
+    /// few floats).
+    public var view: View {
+        get { View(sfRenderWindow_getView(self.window)) }
+        set { sfRenderWindow_setView(self.window, newValue.view) }
+    }
+    
     // MARK: Initialisation and deinitialisation
     /// Creates a new window.
     ///
@@ -76,29 +98,6 @@ public class RenderWindow {
         sfRenderWindow_close(self.window)
     }
 
-    /// Update and display the render window on screen.
-    public func display() {
-        sfRenderWindow_display(self.window)
-    }
-
-    /// Gets the default view of the window.
-    ///
-    /// It is the view used by the `RenderWindow` if you don't use `setView`. It maches the the window's size 1:1.
-    /// This can be useful if you want to define your own view based on it, or restore it to draw fixed entities
-    /// (like a GUI) on top of your scene. 
-    ///
-    /// - returns: The default view of the render window 
-    public func getDefaultView() -> View {
-        View(sfRenderWindow_getDefaultView(self.window))
-    }
-
-    /// Get the current active view of the render window. 
-    ///
-    /// - returns: The active view of the window.
-    public func getView() -> View {
-        View(sfRenderWindow_getView(self.window))
-    }
-
     /// Convert a point from world coordinates to window coordinates.
     /// 
     /// This function finds the pixel of the render-window that matches the given 2D point. In other words, it goes
@@ -115,12 +114,8 @@ public class RenderWindow {
     ///
     /// - returns: The converted point in pixels.
     public func mapCoordsToPixel(_ point: Vector2F, view: View? = nil) -> Vector2I {
-        if let csfmlView = view?.view {
-            return sfRenderWindow_mapCoordsToPixel(self.window, point, csfmlView)
-        } else {
-            let winView = self.getView()
-            return sfRenderWindow_mapCoordsToPixel(self.window, point, winView.view)
-        }
+        let otherView = view ?? self.view
+        return sfRenderWindow_mapCoordsToPixel(self.window, point, otherView.view)
     }
 
     /// Convert a point from window coordinates to world coordinates.
@@ -141,12 +136,8 @@ public class RenderWindow {
     ///
     /// - returns: The converted point in "world" units.
     public func mapPixelToCoords(_ pixel: Vector2I, view: View? = nil) -> Vector2F {
-        if let csfmlView = view?.view {
-            return sfRenderWindow_mapPixelToCoords(self.window, pixel, csfmlView)
-        } else {
-            let view2 = self.getView()
-            return sfRenderWindow_mapPixelToCoords(self.window, pixel, view2.view)
-        }
+        let otherView = view ?? self.view
+        return sfRenderWindow_mapPixelToCoords(self.window, pixel, otherView.view)
     }
 
     /// Request the current render window to be made the active foreground window.
@@ -162,7 +153,7 @@ public class RenderWindow {
     ///
     /// - parameter limit: Framerate limit in FPS. Must be at least `1`.
     ///                     Set to `nil` to disable the limit.
-    public func setFramerate(limit: UInt32?) {
+    public func setFramerateLimit(to limit: UInt32?) {
         assert(limit ?? 1 > 0, "The framerate limit must be set to at least 1 (use nil to disable).")
         sfRenderWindow_setFramerateLimit(self.window, limit ?? 0)
     }
@@ -186,7 +177,7 @@ public class RenderWindow {
     /// Key repeat is enabled by default.
     ///
     /// - parameter enabled: `true` to enable, `false` to disable.
-    public func setKeyRepeat(to enabled: Bool) {
+    public func enableKeyRepeat(_ enabled: Bool) {
         sfRenderWindow_setKeyRepeatEnabled(self.window, enabled == true ? 1 : 0)
     }
 
@@ -204,14 +195,14 @@ public class RenderWindow {
     /// won't have any effect (fullscreen windows always grab the cursor).
     ///
     /// - parameter grabbed: `true` to enable, `false` to disable.
-    public func setMouseCursorGrabbed(to grabbed: Bool) {
+    public func grabMouseCursor(_ grabbed: Bool) {
         sfRenderWindow_setMouseCursorGrabbed(self.window, grabbed == true ? 1 : 0)
     }
 
     /// Show or hide the mouse cursor. 
     ///
     /// - parameter visible: `true` to show, `false` to hide.
-    public func setMouseCursorVisible(to visible: Bool) {
+    public func showMouseCursor(_ visible: Bool) {
         sfRenderWindow_setMouseCursorVisible(self.window, visible == true ? 1 : 0)
     }
 
@@ -226,29 +217,14 @@ public class RenderWindow {
     /// Enable / disable vertical synchronization on a render window. 
     ///
     /// - parameter enabled: `true` to enable V-Sync, `false` to disable it.
-    public func setVerticalSync(enabled: Bool) {
+    public func enableVerticalSync(_ enabled: Bool) {
         sfRenderWindow_setVerticalSyncEnabled(self.window, enabled == true ? 1 : 0)
-    }
-
-    /// Changes the current active view of a window.
-    ///
-    /// When you call `setView`, the render-target makes a copy of the view, and doesn't store a pointer to the one that
-    /// is passed. This means that whenever you update your view, you need to call setView again to apply the
-    /// modifications.
-    ///
-    ///
-    /// Don't be afraid to copy views or create them on the fly, they aren't expensive objects (they just hold a
-    /// few floats).
-    ///
-    /// - parameter view: The view to apply. 
-    public func setView(to view: View) {
-        sfRenderWindow_setView(self.window, view.view)
     }
 
     /// Show or hide a render window. 
     ///
     /// - parameter visibility: `true` to show the window, `false` to hide it.
-    public func setVisible(to visibility: Bool) {
+    public func show(_ visibility: Bool) {
         sfRenderWindow_setVisible(self.window, visibility == true ? 1 : 0)
     }
 
@@ -352,41 +328,41 @@ public class RenderWindow {
     ///
     /// This function is usually called once every frame, to clear the previous contents of the window.
     ///
-    /// - parameter fillColor: The color used to clear the window.
-    public func clear(fillColor: Color = Color.black) {
-        sfRenderWindow_clear(self.window, fillColor)
+    /// - parameter color: The color used to clear the window.
+    public func clear(withColor color: Color = Color.black) {
+        sfRenderWindow_clear(self.window, color)
     }
     
     /// Draw a `CircleShape` in the window.
     ///
-    /// - parameter shape: The shape to draw.
+    /// - parameter other: The shape to draw.
     /// - parameter renderState: The render state to use for drawing.
-    public func draw(_ shape: CircleShape, renderState: RenderState = .default) {
+    public func draw(_ other: CircleShape, renderState: RenderState = .default) {
         var state = renderState.csfmlRenderState
-        sfRenderWindow_drawCircleShape(self.window, shape.shape, &state)
+        sfRenderWindow_drawCircleShape(self.window, other.shape, &state)
     }
 
     /// Draw a `Sprite` in the window.
     ///
-    /// - parameter sprite: The sprite to draw.
+    /// - parameter other: The sprite to draw.
     /// - parameter renderState: The render state to use for drawing.
-    public func draw(_ sprite: Sprite, renderState: RenderState = .default) {
+    public func draw(_ other: Sprite, renderState: RenderState = .default) {
         var state = renderState.csfmlRenderState
-        sfRenderWindow_drawSprite(self.window, sprite.sprite, &state)
+        sfRenderWindow_drawSprite(self.window, other.sprite, &state)
     }
 
     /// Draws a vertex array in the window.
     ///
     /// - parameters:
-    ///     - vertextArray: The `VertexArray` to draw.
+    ///     - other: The `VertexArray` to draw.
     ///     - renderState: The render state to use for drawing.
-    public func draw(_ vertexArray: VertexArray, renderState: RenderState = .default) {
+    public func draw(_ other: VertexArray, renderState: RenderState = .default) {
         var state = renderState.csfmlRenderState
         sfRenderWindow_drawPrimitives(
             self.window,
-            vertexArray.vertices, 
-            vertexArray.vertices.count, 
-            sfPrimitiveType(rawValue: vertexArray.type.rawValue), 
+            other.vertices,
+            other.vertices.count,
+            sfPrimitiveType(rawValue: other.type.rawValue),
             &state
         )
     }
@@ -405,5 +381,10 @@ public class RenderWindow {
         }
         
         self.draw(other as VertexArray, renderState: state)
+    }
+    
+    /// Updates the content of the render window on screen.
+    public func update() {
+        sfRenderWindow_display(self.window)
     }
 }
