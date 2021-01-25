@@ -1,10 +1,61 @@
 # Changelog
 Tous les changements notables apportés au projet seront documentés dans ce fichier.
 
+[Appuyez ici pour la version anglaise.](../../CHANGELOG.md)
+
 Le format est basé sur [Tenez un changelog](https://keepachangelog.com/fr/1.0.0/)
 et ce projet est conforme à la [Gestion sémantique de version](https://semver.org/lang/fr/).
 
 ## Non-publié
+
+## 0.3.0 La mise a jour du rendu
+Avec cette mise à jour, vous pouvez maintenant dessiner du contenu dans vos fenêtres!
+
+### Changements cassants
+- Le nom de plusieurs méthodes de `RenderWindow` a été modifié.
+
+> **Rappel!**
+>
+> La prochaine version va inclure des changements cassants par rapport au stockage des données relatives aux événements:
+>    - `Event.JoystickMoveData.Axis`
+>    - `Event.KeyData.Code`
+>    - `Event.MouseButtonData.Button`
+>    - `Event.MouseWheelScrollData.Wheel`
+>    - `Event.SensorData.SensorType`
+
+### Additions
+- Importation de la majorité du module graphique:
+    - `BlendMode`
+    - `CircleShape`
+    - `Color`
+    - `Image`
+    - `RectF` and `RectI`
+    - `RenderState`
+    - `RenderTexture`
+    - `Sprite`
+    - `Texture`
+    - `Transform`
+    - `TransformHandler` (`sfTransformable`)
+    - `Vertex`
+    - `View`
+- Addition de la possibilité de dessiner du contenu dans `RenderWindow`.
+- Création d'un protocole afin de créer du contenu dessinable:
+    - `Drawable`
+    - `Transformable`
+    - `VertexArray`
+- `VideoMode` comprend maintenant des propriétés afin d'obtenir et de valider des modes plein-écran.
+- Ajout d'un lien reliant les différentes localisations des changelogs.
+
+### Changements
+- `Vector2F` peut maintenant être initialisé à partir de nombres entiers.
+- La démo a été mise à jour afin d'inclure une démonstrations des possibilités de dessin.
+- La nomenclature d'API de `RenderWindow` a été modifié.
+    
+    Par exemple, la fonction `display()` a été renommée en `update()`.
+
+### Corrections
+- Correction d'un problème où le titre d'une `RenderWindow` s'affichait incorrectement et causait le plantage de l'application.
+- Correction d'un problème causant l'échec du test d'égalité entre deux `Vector2F` égaux.
 
 ## 0.2.0 Mise à jour des événements (2021/01/03)
 ### Changements cassants

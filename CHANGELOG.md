@@ -1,21 +1,61 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+[Click here for the French version.](Documentation/Changelog/CHANGELOG_fr.md)
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-### The Rendering Update
-#### Additions
-- Ported the `Color` struct.
-- Ported the `RenderState` struct.
-- Ported the `BlendMode` struct.
-- Ported the `Transform` struct.
-- Ported the `CircleShape` class.
-- Ported the `Sprite` class.
-- Ported the `Texture` class.
-- Added the ability to render `CircleShape` and `Sprite` in `RenderWindow`.
-- Added a more reliable version of `setTitle()` in `RenderWindow`.
+
+## 0.3.0 The Rendering Update (2021/01/24)
+With this update, you can now display stuff on the screen!
+
+### Breaking changes
+- The name of many `RenderWindow` methods have changed.
+
+> **Reminder!**
+>
+> The next version will include breaking changes relative to event data:
+>    - `Event.JoystickMoveData.Axis`
+>    - `Event.KeyData.Code`
+>    - `Event.MouseButtonData.Button`
+>    - `Event.MouseWheelScrollData.Wheel`
+>    - `Event.SensorData.SensorType`
+
+### Additions
+- Imported the majority of the Graphic module:
+    - `BlendMode`
+    - `CircleShape`
+    - `Color`
+    - `Image`
+    - `RectF` and `RectI`
+    - `RenderState`
+    - `RenderTexture`
+    - `Sprite`
+    - `Texture`
+    - `Transform`
+    - `TransformHandler` (`sfTransformable`)
+    - `Vertex`
+    - `View`
+- Added the ability to render content in `RenderWindow`.
+- Created protocols for creating drawable content:
+    - `Drawable`
+    - `Transformable`
+    - `VertexArray`
+- VideoMode now have new properties for getting and verifying fullscreen modes.
+- Added links between the different localizations of the changelogs.
+
+### Changes
+- Vector2F can now be initialized with integer values.
+- The demo has been upgraded to include drawing capabilities.
+- The naming of `RenderWindow`'s API has been modified.
+
+    For example, the `display()` function is now called `update()`.
+
+### Fixes
+- Corrected an issue where `RenderWindow`'s title would not appear correcly or crash the app.
+- Sometimes two equal Vector2F would not appear as equal.
 
 ## 0.2.0 Event Update (2021/01/03)
 ### Breaking changes
