@@ -13,19 +13,33 @@ import CSFML
 ///
 /// **Example**
 ///
+///     var event = Event.unknown
 ///
+///     while window.poll(event: &event) {
+///         // Request for closing the window.
+///         switch event {
+///         // Request for closing the window.
+///         case .closed:
+///             window.close()
 ///
+///         // The escape key was pressed.
+///         case let .keyPressed(data)
+///             if (data.code == .escape) {
+///                 window.close()
+///             }
+///         // The window was resized.
+///         case let .resized(width, height):
+///             doSomethingWithTheNewSize(width, height)
+///         }
 ///
+///         // etc.
 ///
+///         default:
+///             break
+///     }
 ///
-///
-///
-///
-///
-///
-///
-/// **See Also**
-/// - SeeAlso: [Original Documentation](https://www.sfml-dev.org/tutorials/2.5/window-events.php)
+/// - SeeAlso:
+///     [Original Documentation](https://www.sfml-dev.org/tutorials/2.5/window-events.php)
 public enum Event {
     /// The window requested to be closed.
     ///
@@ -403,7 +417,7 @@ public enum Event {
     ///     case let .joystickButtonPressed(data):
     ///         print("Joystick button pressed!")
     ///         print("Joystick id: \(data.joystickID)")
-    ///         print("Button: \(data.buuton)")
+    ///         print("Button: \(data.button)")
     ///     default: break
     ///     }
     ///
@@ -428,7 +442,7 @@ public enum Event {
     ///     case let .joystickButtonReleased(data):
     ///         print("Joystick button released!")
     ///         print("Joystick id: \(data.joystickID)")
-    ///         print("Button: \(data.buuton)")
+    ///         print("Button: \(data.button)")
     ///     default: break
     ///     }
     ///

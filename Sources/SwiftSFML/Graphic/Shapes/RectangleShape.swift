@@ -22,6 +22,7 @@ public struct RectangleShape: Drawable {
     
     public let type: PrimitiveType = .quads
     
+    /// The area covered by the rectangle.
     public var rect: RectF {
         get { self.bounds }
         set {
@@ -32,6 +33,12 @@ public struct RectangleShape: Drawable {
         }
     }
     
+    /// Create a new rectangle covering the given area.
+    ///
+    /// - parameters:
+    ///     - rect: The area to cover with the rectangle.
+    ///     - textureRect: The area of a texture covered by the rectangle. Defaults to a 32x32 rectangle from the top left of the texture.
+    ///     - color: The color of the rectangle. Will be fused with the texture data if applicable. Defaults to `Color.white`.
     public init(rect: RectF, textureRect: RectF = RectF(left: 0, top: 0, width: 32, height: 32), color: Color = .white) {
         self.vertices = [
             Vertex(position: Vector2F(x: rect.left, y: rect.top), color: color, texCoords: Vector2F(x: textureRect.left, y: textureRect.top)),

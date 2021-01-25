@@ -116,6 +116,15 @@ final class GraphicsTests: XCTestCase {
 
     }
 
+    func testVideoModes() {
+        let modes = VideoMode.fullscreenModes
+        
+        modes.forEach {
+            print($0)
+            XCTAssertTrue($0.isValid)
+        }
+    }
+    
     static var allTests = [
         ("graphicsTestColor", testColor),
         ("graphicsTestTransform", testTransform),
@@ -123,6 +132,7 @@ final class GraphicsTests: XCTestCase {
         ("graphicTestSprite", testSprite),
         ("graphicTestBlendMode", testBlendMode),
         ("graphicTestImage", testImage),
-        ("graphicTestView", testView)
+        ("graphicTestView", testView),
+        ("graphicTestVideoMode", testVideoModes),
     ]
 }

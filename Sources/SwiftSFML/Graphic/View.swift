@@ -66,6 +66,11 @@ public class View {
         self.view = sfView_createFromRect(rect)
     }
 
+    /// Constructs a view from its center and size.
+    ///
+    /// - parameters:
+    ///     - center: The center of the zone to display.
+    ///     - size: The size of the zone to display.
     public convenience init(center: Vector2F, size: Vector2F) {
         let rect = RectF(left: center.x - (size.x / 2), top: center.y - (size.y / 2), width: size.x, height: size.y)
         self.init(rect: rect)
@@ -78,7 +83,7 @@ public class View {
     }
 
     /// Creates a new 'View' from an existing 'sfView'.
-    /// csfmlView: The source view.
+    /// - parameter csfmlView: The source view.
     internal init(_ csfmlView: OpaquePointer) {
         self.view = sfView_copy(csfmlView)
     }
@@ -105,10 +110,12 @@ public class View {
     /// Resize a view rectangle relatively to its current size.
     /// 
     /// Resizing the view simulates a zoom, as the zone displayed on screen grows or shrinks. factor is a multiplier:
-    /// 
-    /// - 1 keeps the size unchanged
-    /// - > 1 makes the view bigger (objects appear smaller)
-    /// - < 1 makes the view smaller (objects appear bigger)
+    ///
+    ///
+    /// - parameter factor: The scale factor of the view:
+    ///     - 1 keeps the size unchanged
+    ///     - > 1 makes the view bigger (objects appear smaller)
+    ///     - < 1 makes the view smaller (objects appear bigger)
     public func zoom(by factor: Float) {
         sfView_zoom(self.view, factor)
     }

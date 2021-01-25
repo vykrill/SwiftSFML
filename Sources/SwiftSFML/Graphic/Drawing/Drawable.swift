@@ -3,13 +3,36 @@
 // On 2021/01/09
 // For SwiftSFML
 
-/// Defines an object that can be drawn in a `RenderWindow`.
+/// Defines an object that can be drawn in a `RenderWindow` or `RenderTarget`.
 ///
 /// By opposition to a simple `VertexArray`, `Drawable` stores a texture and its transforms. This eliminates the need
 /// for passing a `RenderState` instance in the `draw` function.
+///
+/// Creating a type conforming to `Drawable` is quite simple:
+///
+///     public struct Shape: Drawable {
+///         public var vertices: [Vertex] = ...
+///         public let type: PrimitiveType = ...
+///         public var transformations = TransformHandler()
+///         public var texture: Texture?
+///     }
+///
+///     let shape = Shape()
+///
+/// All you need to do inside your Type is to position correctly the vertices in local space. You can also override `getTextureCoordinate(for:, textureRect: )` in order to customise
+/// The texture mapping. Conforming to `Drawable`gives your type access to transforms and drawing.
+///
+///     shape.scale(by: Vector2F(x: 2, y: 2)
+///     shape.texture = myTexture
+///     shape.setTextureRect(to: RectF(left: 0, top: 0, width: 64, height: 64))
+///
+///     window.draw(shape)
+///
 public protocol Drawable: VertexArray, Transformable {
+    
     /// The texture of the object.
     var texture: Texture? { get }
+    
     /// Calculates the new texture coordinate of a vertex.
     /// 
     /// This function is responsible for calculating the texture coordinate of each vertex when the `resetTextureRect` and
@@ -72,7 +95,7 @@ extension Drawable {
     /// Fits the current texture rect to the size of the texture.
     ///
     /// This function uses the `getTextureCoordinate(for:, textureRect:)` to calculates the new texture coordinates
-    /// with a texture rect of (0, 0, texture.width, texture.height).
+    /// with a texture rect of (0, 0, texture.width, texture.height). If `texture` is set to `nil`, this method does nothing.
     public mutating func resetTextureRect() {
         guard let size = self.texture?.size else {
             return

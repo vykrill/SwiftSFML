@@ -12,6 +12,7 @@ public protocol VertexArray {
 }
 
 extension VertexArray {
+    /// The local size of the vertext array.
     public var size: Vector2F {
         let x = self.vertices.map({$0.position.x})
         let y = self.vertices.map({$0.position.y})
@@ -19,6 +20,7 @@ extension VertexArray {
         return Vector2F(x: (x.max() ?? 0) - (x.min() ?? 0), y: (y.max() ?? 0) - (y.min() ?? 0))
     }
 
+    /// The area covered by the vertex array.
     public var bounds: RectF {
         let x = self.vertices.map({$0.position.x})
         let y = self.vertices.map({$0.position.y})
@@ -31,6 +33,8 @@ extension VertexArray {
         )
     }
     
+    /// Changes the color of each vertex.
+    /// - parameter color: The color to apply.
     public mutating func setColor(to color: Color) {
         for index in self.vertices.indices {
             self.vertices[index].color = color

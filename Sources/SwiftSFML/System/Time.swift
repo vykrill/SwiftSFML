@@ -19,11 +19,14 @@ extension Time {
     public var milliseconds: Int32 { sfTime_asMilliseconds(self)}
 
     /// Creates a new time value from a number of seconds.
+    ///
+    /// - parameter seconds: A number of seconds.
     public init(seconds: Float) {
         self = sfSeconds(seconds)
     }
 
     /// Creates a new time value from a number of milliseconds.
+    /// - parameter milliseconds: A number of milliseconds.
     public init(milliseconds: Int32) {
         self = sfMilliseconds(milliseconds)
     }
