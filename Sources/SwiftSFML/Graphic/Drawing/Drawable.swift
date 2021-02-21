@@ -44,10 +44,11 @@ public protocol Drawable: VertexArray, Transformable {
     ///
     /// - parameters:
     ///     - vertex: The vertex for which a new texture coordinate is needed.
+    ///     - index: The index of the current vertex. Usefull when some vertices can overlap.
     ///     - rect: The new texture rect that will be applied.
     ///
     /// - returns: The corresponding texture coordinate for `vertex`.
-    func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F
+    func getTextureCoordinate(for vertex: Vertex, atIndex index: Int, textureRect rect: RectF) -> Vector2F
 }
 
 extension Drawable {
@@ -110,11 +111,11 @@ extension Drawable {
     /// - parameter rect: The new texture rect to apply.
     public mutating func setTextureRect(to rect: RectF) {
         for index in self.vertices.indices {
-            self.vertices[index].texCoords = self.getTextureCoordinate(for: vertices[index], textureRect: rect)
+            self.vertices[index].texCoords = self.getTextureCoordinate(for: vertices[index], atIndex: index, textureRect: rect)
         }
     }
 
-    public func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F {
+    public func getTextureCoordinate(for vertex: Vertex, atIndex: Int, textureRect rect: RectF) -> Vector2F {
         Vector2F(
             x: (vertex.position.x * rect.width) / self.bounds.width + rect.left,
             y: (vertex.position.y * rect.height) / self.bounds.height + rect.top

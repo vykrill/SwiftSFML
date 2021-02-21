@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+- `getTextureCoordinate` in `Drawable` now require a `withIndex` argument.
 
 ## 0.3.0 The Rendering Update (2021/01/24)
 With this update, you can now display stuff on the screen!

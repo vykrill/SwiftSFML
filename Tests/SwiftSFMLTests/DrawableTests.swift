@@ -25,7 +25,7 @@ final class DrawableTests: XCTestCase {
         let type = PrimitiveType.lines
         var texture: Texture?
 
-        func getTextureCoordinate(for vertex: Vertex, textureRect rect: RectF) -> Vector2F {
+        func getTextureCoordinate(for vertex: Vertex, atIndex: Int, textureRect rect: RectF) -> Vector2F {
             print("Yeah!")
             let vect = Vector2F(x: 1, y: 1)
             return vect
