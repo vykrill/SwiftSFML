@@ -37,6 +37,8 @@ public class Clock {
         sfClock_restart(data)
     }
 
+    public init() {}
+
     deinit {
         sfClock_destroy(data)
     }
