@@ -94,33 +94,6 @@ final class GraphicsTests: XCTestCase {
         XCTAssertEqual(blend1, blend2)
     }
 
-    func testImage() {
-        let savedImageURL = URL(
-            fileURLWithPath: "savedImage.png",
-            relativeTo: FileManager.default.temporaryDirectory
-        )
-        let sourceImageURL = Bundle.module.url(forResource: "texture", withExtension: "png")
-
-        /// Empty Image
-        let image = Image(width: 0, height: 0)
-        XCTAssertFalse(image.save(to: savedImageURL))
-
-        // Image modification and saving
-        let image2 = Image(width: 16, height: 16, fillColor: .black)
-        image2[0, 0] = .red
-        XCTAssertTrue(image2.save(to: savedImageURL))
-        let image3 = Image(fromFileURL: savedImageURL)
-        XCTAssertNotNil(image3)
-        XCTAssertEqual(image3![0, 0], .red)
-
-        /// Image size
-        let image4 = Image(fromFileURL: sourceImageURL!)
-        XCTAssertNotNil(image4)
-        let size = Int(image4!.size.x * image4!.size.y * 4)
-        XCTAssertEqual(size, image4!.getPixels()!.count)
-        XCTAssertTrue(image4!.save(to: savedImageURL))
-    }
-
     func testView() {
         let view = View()
         XCTAssertEqual(view.size, Vector2F(x: 1000, y: 1000))
@@ -142,7 +115,6 @@ final class GraphicsTests: XCTestCase {
         ("graphicsTestTextures", testTextures),
         ("graphicTestSprite", testSprite),
         ("graphicTestBlendMode", testBlendMode),
-        ("graphicTestImage", testImage),
         ("graphicTestView", testView),
         ("graphicTestVideoMode", testVideoModes),
     ]
