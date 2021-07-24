@@ -10,9 +10,19 @@ public class Image {
     /// The internal SFML `sf::Image` instance.
     internal var image: OpaquePointer
 
-    /// The size of the image.
+    /// The size of the image in pixels.
     public var size: Vector2U {
         sfImage_getSize(self.image)
+    }
+
+    /// The width of the image in pixels.
+    public var width: UInt32 {
+        self.size.x
+    }
+
+    /// The height of the image in pixels.
+    public var height: UInt32 {
+        self.size.y
     }
 
     /// Creates an image and fills it with a color.
@@ -101,8 +111,10 @@ public class Image {
     /// An interface to access and modify the image's pixel data.
     subscript(x: UInt32, y: UInt32) -> Color {
         get {
-            sfImage_getPixel(self.image, x, y)
+            assert(verifyPixelPositionAt(x: x, y: y), "The pixel is out of bounds.")
+            return sfImage_getPixel(self.image, x, y)
         } set {
+            assert(verifyPixelPositionAt(x: x, y: y), "The pixel is out of bounds.")
             sfImage_setPixel(self.image, x, y, newValue)
         }
     }
@@ -130,5 +142,10 @@ public class Image {
         }
 
         return array
+    }
+
+    /// Verifies if a pixel index is within the bounds of the image.
+    private func verifyPixelPositionAt(x: UInt32, y: UInt32) -> Bool {
+        return x < self.size.x && y < self.size.y
     }
 }
