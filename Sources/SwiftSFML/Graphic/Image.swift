@@ -67,9 +67,23 @@ public class Image {
         sfImage_flipVertically(self.image)
     }
 
+    /// Save an image to a file on disk.
+    ///
+    /// The format of the image is automatically deduced from the 
+    /// extension. The supported image formats are bmp, png, tga 
+    /// and jpg. The destination file is overwritten if it already
+    /// exists. This function fails if the
+    /// image is empty.
+    public func save(to url: URL) -> Bool {
+        sfImage_saveToFile(self.image, url.path) != 0
+    }
+
+    // MARK: Pixel manipulation
+
     /// Get the color of a pixel in an image.
     /// 
-    /// This function doesn't check the validity of the pixel coordinates, using out-of-range values will result in an
+    /// This function doesn't check the validity of the pixel 
+    /// coordinates, using out-of-range values will result in an
     /// undefined behaviour.
     ///
     /// - parameters: 
@@ -77,16 +91,30 @@ public class Image {
     ///     - y: The Y coordinate of the pixel to get.
     ///
     /// - returns: The color of the pixel at (x, y).
+    ///
+    /// > Warning: This method is deprecated. Use subscript notation
+    /// > instead.
     public func getPixelAt(x: UInt32, y: UInt32) -> Color {
         sfImage_getPixel(self.image, x, y)
     }
 
+    /// An interface to access and modify the image's pixel data.
+    subscript(x: UInt32, y: UInt32) -> Color {
+        get {
+            sfImage_getPixel(self.image, x, y)
+        } set {
+            sfImage_setPixel(self.image, x, y, newValue)
+        }
+    }
+
     /// Get a read-only pointer to the array of pixels of an image.
     /// 
-    /// The returned value points to an array of RGBA pixels made of 8 bits integers components. The size of the array
+    /// The returned value points to an array of RGBA pixels made
+    /// of 8 bits integers components. The size of the array
     /// is `width.y * height * 4`. 
     ///
-    /// - Warning: the returned pointer may become invalid if you modify the image, so you should never store it for too
+    /// - Warning: the returned pointer may become invalid if you
+    /// modify the image, so you should never store it for too
     /// long.
     ///
     /// - returns: `nil` if the image is empty; otherwise the array of pixels.
@@ -102,12 +130,5 @@ public class Image {
         }
 
         return array
-    }
-
-    /// Save an image to a file on disk.
-    ///
-    /// The format of the image is automatically deduced from the extension. The supported image formats are bmp, png, tga and jpg. The destination file is overwritten if it already exists. This function fails if the image is empty.
-    public func save(to url: URL) -> Bool {
-        sfImage_saveToFile(self.image, url.path) != 0
     }
 }
