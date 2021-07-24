@@ -41,12 +41,12 @@ public class Image {
     /// supported, like progressive jpeg. If this function fails, the image is left unchanged.
     ///
     /// - parameter url: The URL of the file.
-    public init?(fromFileURL url: URL) {
-        if let image = sfImage_createFromFile(url.path) {
-            self.image = image
-        } else {
-            return nil
-        }
+    public init?(fromFileURL url: URL?) {
+        if url != nil, let image = sfImage_createFromFile(url!.path) {
+                self.image = image
+            } else {
+                return nil
+            }
     }
 
     deinit {
