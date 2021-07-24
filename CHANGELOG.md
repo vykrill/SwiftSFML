@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 - `getTextureCoordinate` in `Drawable` now require a `withIndex` argument.
+- `Image` now supports subscript notation to access its pixel data.
+  The usage of `getPixelAt(x:y:)` is now deprecated.
+- `Image(fromFileURL:)` now accepts an optionnal value, which is useful
+  when working with `Bundle.module.url(forResource:,withExtension:)`
 
 ## 0.3.0 The Rendering Update (2021/01/24)
 With this update, you can now display stuff on the screen!
