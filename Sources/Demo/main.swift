@@ -129,14 +129,6 @@ while window.isOpen {
             )
         case let .keyPressed(data):
             switch data.code {
-            case .left:
-                // Shift the background color.
-                currentHue -= 1
-                if currentHue < 0 { currentHue = 359}
-            case .right:
-                // Shift the background color.
-                currentHue += 1
-                if currentHue >= 360 { currentHue = 0}
             case .s:
                 // We toggle the smoothness of the texture.
                 rectTexture.isSmooth.toggle()
@@ -152,6 +144,16 @@ while window.isOpen {
         default:
             break
         }
+    }
+
+    // Background color
+    if (Keyboard[.left] == true) {
+        currentHue -= 1
+        if currentHue < 0 { currentHue = 359}
+    }
+    if (Keyboard[.right] == true) {
+        currentHue += 1
+        if currentHue >= 360 { currentHue = 0}
     }
 
     // The follower follows the mouse
@@ -179,7 +181,7 @@ while window.isOpen {
         follower, 
         renderState: RenderState(.multiplicativeBlending)
     )
-    
+
     // We update the on-screen content.
     window.update()
 }
