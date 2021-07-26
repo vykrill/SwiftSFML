@@ -88,6 +88,18 @@ public class RenderWindow {
         self.window = sfRenderWindow_createUnicode(mode, title.utf32, style.rawValue, &settingsCopy)
     }
 
+    /// The position of the mouse.
+    ///
+    /// The position of the mouse relative to the current window.
+    public var mousePosition: Vector2I {
+        get {
+            sfMouse_getPosition(self.window)
+        } 
+        set {
+            sfMouse_setPosition(newValue, self.window)
+        }
+    }
+
     deinit {
         sfRenderWindow_destroy(self.window)
     }

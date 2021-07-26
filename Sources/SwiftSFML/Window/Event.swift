@@ -875,7 +875,7 @@ public enum Event {
     public struct MouseButtonData {
         
         /// Which button has been pressed.
-        public var button: Button
+        public var button: Mouse.Button
         /// X position of the mouse pointer, relative to the left of the owner window.
         public var x: Int
         /// Y position of the mouse pointer, relative to the top of the owner window.
@@ -888,23 +888,9 @@ public enum Event {
             assert(csfmlEvent.type == sfEvtMouseButtonPressed || csfmlEvent.type == sfEvtMouseButtonReleased,
                 "Tried to create a MouseButtonData instance from an invalid sfEvent")
 
-            self.button = Button(rawValue: csfmlEvent.mouseButton.button.rawValue)!
+            self.button = Mouse.Button(rawValue: csfmlEvent.mouseButton.button.rawValue)!
             self.x = Int(csfmlEvent.mouseButton.x)
             self.y = Int(csfmlEvent.mouseButton.y)
-        }
-
-        public enum Button: UInt32 {
-            /// The left mouse button.
-            case left
-            /// The right mouse button.
-            case right
-            /// The middle mouse button (wheel).
-            case middle
-            /// The first extra mouse button.
-            case xButton1
-            /// The second extra mouse button.
-            case xButton2
-            // case count
         }
     }
 
@@ -917,7 +903,7 @@ public enum Event {
     public struct MouseWheelScrollData {
 
         /// The orientation of the wheel.
-        public var wheel: Wheel
+        public var wheel: Mouse.Wheel
         /// Wheel ofset.
         ///
         /// Positive is up/left, negative is down/right. High-precision mice may use non-integral offsets.
@@ -942,16 +928,7 @@ public enum Event {
             self.delta = Float(csfmlEvent.mouseWheelScroll.delta)
             self.x = Int(csfmlEvent.mouseWheelScroll.x)
             self.y = Int(csfmlEvent.mouseWheelScroll.y) 
-        }
-
-        // TODO: Move to a Mouse struct
-        /// Mouse wheels
-        public enum Wheel {
-            /// The vertical mouse wheel.
-            case vertical
-            /// The horizontal mouse wheel.
-            case horizontal
-        }
+        }        
     }
 
     /// Touch event parameters.

@@ -78,6 +78,13 @@ tiledRect.origin = Vector2F(x: defaultWidth / 2, y: defaultHeight / 2)
 tiledRect.position = tiledRect.origin
 tiledRect.texture = renderTexture.texture
 
+/// The mouse follower
+var follower = CircleShape(radius: 10)
+follower.fillColor = .green
+follower.outlineColor = .black
+follower.outlineThickness = 1
+follower.origin = Vector2F(x: 10.0, y: 10.0)
+
 /// The event storage.
 var event = Event.unknown
 /// The main window.
@@ -133,6 +140,12 @@ while window.isOpen {
             case .s:
                 // We toggle the smoothness of the texture.
                 rectTexture.isSmooth.toggle()
+            case .up:
+                follower.radius += 10
+                follower.origin += Vector2F(x: 10, y: 10)
+            case .down:
+                follower.radius -= 10
+                follower.origin -= Vector2F(x: 10, y: 10)
             default:
                 break
             }
@@ -140,6 +153,9 @@ while window.isOpen {
             break
         }
     }
+
+    // The follower follows the mouse
+    follower.position = window.mapPixelToCoords(window.mousePosition)
 
     // We adjust the background color.
     rect.setColor(to: Color(h: currentHue, s: 1, v: 1))
@@ -159,6 +175,11 @@ while window.isOpen {
     window.draw(rect, renderState: rectState)
     window.draw(tiledRect)
     window.draw(sprite, renderState: state)
+    window.draw(
+        follower, 
+        renderState: RenderState(.multiplicativeBlending)
+    )
+    
     // We update the on-screen content.
     window.update()
 }
