@@ -11,6 +11,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(DrawableTests.allTests),
         testCase(RenderTextureTests.allTests),
         testCase(ImageTests.allTests),
+        testCase(VectorTests.allTests)
     ]
 }
 #endif
